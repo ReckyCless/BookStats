@@ -1,0 +1,53 @@
+﻿<Page x:Class="BookStats.Pages.ToolPages.RegistrationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BookStats.Pages.ToolPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Регистрация">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource MainBlock}" Text="Логин*" Width="auto"/>
+                <TextBox Width="150" Text="{Binding Login}" PreviewTextInput="LoginValidationTextBox" PreviewKeyDown="TextBox_PreviewKeyDown" MaxLength="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource MainBlock}" Text="Пароль*" Width="auto"/>
+                <PasswordBox Width="150" Name="tbPassword" PasswordChanged="PasswordValidationTextBox" PreviewKeyDown="TextBox_PreviewKeyDown" MaxLength="150"/>
+            </StackPanel>
+            <TextBlock Style="{StaticResource MainBlock}" TextWrapping="Wrap" Width="180" Visibility="Collapsed" HorizontalAlignment="Right" Name="PasswordValidationErr" Foreground="Red"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource MainBlock}" Text="Повтор*" Width="auto"/>
+                <PasswordBox Width="150"  Name="tbPasswordRepeat" PasswordChanged="PasswordRepeatValidationTextBox" PreviewKeyDown="TextBox_PreviewKeyDown" MaxLength="150"/>
+            </StackPanel>
+            <TextBlock Style="{StaticResource MainBlock}" TextWrapping="Wrap" Width="180" Visibility="Collapsed" HorizontalAlignment="Right" Name="PasswordRepeatValidationErr" Foreground="Red"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource MainBlock}" Text="Имя*" Width="auto"/>
+                <TextBox Width="150" Text="{Binding FirstName}" PreviewTextInput="TextValidationTextBox" PreviewKeyDown="TextBox_PreviewKeyDown" MaxLength="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource MainBlock}"  Text="Фамилия*" Width="auto"/>
+                <TextBox Width="150" Text="{Binding SecondName}" PreviewTextInput="TextValidationTextBox" PreviewKeyDown="TextBox_PreviewKeyDown" MaxLength="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource MainBlock}"  Text="Отчество" Width="auto"/>
+                <TextBox Width="150" Text="{Binding Patronymic}" PreviewTextInput="TextValidationTextBox" PreviewKeyDown="TextBox_PreviewKeyDown" MaxLength="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource MainBlock}" Text="Телефон*" Width="auto"/>
+                <TextBox Width="150" Text="{Binding Phone}" PreviewTextInput="TextValidationTextBox" PreviewKeyDown="TextBox_PreviewKeyDown" MaxLength="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource MainBlock}" Text="Email" Width="auto"/>
+                <TextBox Width="150" Text="{Binding Email}" PreviewTextInput="TextValidationTextBox" PreviewKeyDown="TextBox_PreviewKeyDown" MaxLength="150"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center">
+                <Button Name="btnRegister" Click="BtnRegister_Click" Content="Продолжить" FontSize="16"/>
+                <TextBlock Style="{StaticResource MainBlock}"  Width="auto" Name="btnToLogin"><Hyperlink NavigateUri="AuthPage.xaml">Войти в аккаунт?</Hyperlink></TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

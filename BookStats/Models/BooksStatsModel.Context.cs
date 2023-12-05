@@ -15,9 +15,36 @@ namespace BookStats.Models
     using System.Data.Objects;
     using System.Data.Objects.DataClasses;
     using System.Linq;
-    
+    class MyContextInitializer : CreateDatabaseIfNotExists<BooksStatsDBEntities>
+    {
+        protected override void Seed(BooksStatsDBEntities db)
+        {
+            BookStatuses status1 = new BookStatuses { StatusName = "Доступна" };
+            BookStatuses status2 = new BookStatuses { StatusName = "Используется" };
+            BookStatuses status3 = new BookStatuses { StatusName = "В архиве" };
+
+            db.BookStatuses.Add(status1);
+            db.BookStatuses.Add(status2);
+            db.BookStatuses.Add(status3);
+
+
+            Roles role1 = new Roles { Name = "Администратор" };
+            Roles role2 = new Roles { Name = "Пользователь" };
+
+            db.Roles.Add(role1);
+            db.Roles.Add(role1);
+
+            db.SaveChanges();
+        }
+    }
+
     public partial class BooksStatsDBEntities : DbContext
     {
+        static BooksStatsDBEntities()
+        {
+            Database.SetInitializer<BooksStatsDBEntities>(new MyContextInitializer());
+        }
+
         public BooksStatsDBEntities()
             : base("name=BooksStatsDBEntities")
         {
@@ -31,6 +58,8 @@ namespace BookStats.Models
         public DbSet<Roles> Roles { get; set; }
         public DbSet<sysdiagrams> sysdiagrams { get; set; }
         public DbSet<Users> Users { get; set; }
+        public DbSet<Books> Books { get; set; }
+        public DbSet<BookStatuses> BookStatuses { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

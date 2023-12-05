@@ -11,18 +11,16 @@
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel HorizontalAlignment="Center">
-                <TextBlock Foreground="{StaticResource ColorAccent}" Text="Логин:"/>
+                <TextBlock Style="{StaticResource MainBlock}" Foreground="{StaticResource ColorAccent}" Text="Логин:"/>
                 <TextBox Name="tbLogin" Width="200"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
-                <TextBlock Foreground="{StaticResource ColorAccent}" Text="Пароль:"/>
+                <TextBlock Style="{StaticResource MainBlock}" Foreground="{StaticResource ColorAccent}" Text="Пароль:"/>
                 <PasswordBox Name="tbPassword" Width="200"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
-                <Button Name="btnLogin" Click="BtnLogin_Click">
-                    <TextBlock Text="Войти" Foreground="{StaticResource ColorText0}"/>
-                </Button>
-                <TextBlock Width="auto"><Hyperlink Click="BtnToRegister_Click">Создать аккаунт?</Hyperlink></TextBlock>
+                <Button Name="btnLogin" Click="BtnLogin_Click" Content="Войти" FontSize="16"/>
+                <TextBlock Style="{StaticResource MainBlock}" Width="auto"><Hyperlink Click="BtnToRegister_Click">Создать аккаунт?</Hyperlink></TextBlock>
             </StackPanel>
         </StackPanel>
     </Grid>

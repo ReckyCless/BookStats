@@ -62,7 +62,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Pages\BooksPages\BooksViewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ToolPages\AuthPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ToolPages\RegistrationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -74,6 +82,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Books.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BooksPartial.cs" />
     <Compile Include="Models\BooksStatsModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -88,6 +100,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BooksStatsModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BookStatuses.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Roles.cs">
       <DependentUpon>BooksStatsModel.tt</DependentUpon>
@@ -104,8 +119,14 @@
     <Compile Include="Models\Users.cs">
       <DependentUpon>BooksStatsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Pages\BooksPages\BooksViewPage.xaml.cs">
+      <DependentUpon>BooksViewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ToolPages\AuthPage.xaml.cs">
       <DependentUpon>AuthPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ToolPages\RegistrationPage.xaml.cs">
+      <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -157,7 +178,8 @@
       <DependentUpon>BooksStatsModel.edmx</DependentUpon>
       <LastGenOutput>BooksStatsModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Resources\Logo.png" />
+    <Resource Include="Resources\default.png" />
+    <Resource Include="Resources\Logo.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

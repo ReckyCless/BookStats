@@ -19,23 +19,23 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0">
-                    <Grid x:Name="GridNav" Width="60">
+                    <Grid x:Name="GridNav" Width="200">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <Grid Grid.Row="0">
-                            <Image Source="/Resources/Logo.png" Width="60" Height="40"/>
+                            <Image Width="60" Height="50" Margin="10 0 0 0" HorizontalAlignment="Left" Stretch="Uniform" Source="/Resources/Logo.png"/>
                         </Grid>
 
                         <!-- Start: MenuItem -->
-                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                            <StackPanel Margin="-1 0 0 0">
-                                <DockPanel>
-                                    <Button DockPanel.Dock="Bottom" x:Name="btnBack" Style="{DynamicResource roundedButton}" Content="🔙" Click="BtnBack_Click"/>
-                                </DockPanel>
-                            </StackPanel>
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
+                            <DockPanel>
+                                <Button VerticalAlignment="Bottom" DockPanel.Dock="Bottom" x:Name="btnBack" Style="{DynamicResource roundedButton}"  Click="BtnBack_Click">
+                                    <TextBlock FontSize="26" Text="🔙"/>
+                                </Button>
+                            </DockPanel>
                         </ScrollViewer>
 
                     </Grid>

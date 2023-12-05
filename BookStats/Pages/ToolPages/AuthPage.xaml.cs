@@ -38,7 +38,7 @@ namespace BookStats.Pages.ToolPages
                     .FirstOrDefault(window => window is MainWindow) as MainWindow;
 
                 MessageBox.Show("Прошло удачно!");
-                /* NavigationService.Navigate(new Pages.ProductView());*/
+                NavigationService.Navigate(new Pages.BooksPages.BooksViewPage());
 
             }
             else
@@ -62,7 +62,7 @@ namespace BookStats.Pages.ToolPages
 
         private void BtnToRegister_Click(object sender, RoutedEventArgs e)
         {
-            /*NavigationService.Navigate(new RegisterPage(null));*/
+            NavigationService.Navigate(new RegistrationPage(null));
         }
     }
 }
