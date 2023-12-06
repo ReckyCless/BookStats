@@ -34,6 +34,10 @@ namespace BookStats.Models
             db.Roles.Add(role1);
             db.Roles.Add(role1);
 
+            Users userAdmin = new Users { Login = "admin", Password = "admin", FirstName = "Л", SecondName = "О", Patronymic = "Х", Phone = "+7 *** *** ** **", Email = "lobrynyaegorich@gmail.com", Role = 1, DateOfAdding = DateTime.Now };
+
+            db.Users.Add(userAdmin);
+
             db.SaveChanges();
         }
     }
