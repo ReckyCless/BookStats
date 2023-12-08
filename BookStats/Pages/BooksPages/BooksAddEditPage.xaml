@@ -1,0 +1,110 @@
+﻿<Page x:Class="BookStats.Pages.BooksPages.BooksAddEditPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BookStats.Pages.BooksPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="800"
+      Title="Книги. Добавление">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 25">
+            <StackPanel Margin="25 0" Width="200">
+                <StackPanel>
+                    <Border Style="{StaticResource blockBorderAddEdit}">
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Артикул"/>
+                    </Border>
+                    <TextBox Style="{StaticResource txtboxAddEdit}" x:Name="txtAgreementNumber" Text="{Binding Article}" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                            DataObject.Pasting="ArticlePastingHandler" PreviewTextInput="ArticleValidationTextBox" MaxLength="6"/>
+                </StackPanel>
+                <StackPanel>
+                    <Border Style="{StaticResource blockBorderAddEdit}">
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Название"/>
+                    </Border>
+                    <TextBox MaxHeight="50" Style="{StaticResource txtboxAddEdit}" Text="{Binding Title}" TextWrapping="Wrap" DataObject.Pasting="TextPastingHandler" PreviewTextInput="TextValidationTextBox" MaxLength="2000"/>
+                </StackPanel>
+                <StackPanel Margin="0 10">
+                    <Border Style="{StaticResource blockBorderAddEdit}">
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Автор"/>
+                    </Border>
+                    <ComboBox Height="30" x:Name="cmbAuthor" SelectedItem="{Binding Author}" DisplayMemberPath="StatusName" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+                </StackPanel>
+                <StackPanel>
+                    <Border Style="{StaticResource blockBorderAddEdit}">
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Дата/Год выпуска"/>
+                    </Border>
+                    <Border Style="{StaticResource blockBorderBottomAddEdit}">
+                        <DatePicker x:Name="dpAgreementDate" BorderThickness="0" Background="Transparent" SelectedDate="{Binding DateOfAgreement}"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Margin="0 10">
+                    <Border Style="{StaticResource blockBorderAddEdit}">
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Примерная стоимость"/>
+                    </Border>
+                    <TextBox Style="{StaticResource txtboxAddEdit}" Text="{Binding Price}" PreviewKeyDown="TextBox_PreviewKeyDown" DataObject.Pasting="NumberPastingHandler" PreviewTextInput="NumberValidationTextBox" MaxLength="30"/>
+                </StackPanel>
+                <StackPanel>
+                    <Border Style="{StaticResource blockBorderAddEdit}">
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Заявитель"/>
+                    </Border>
+                    <TextBox Style="{StaticResource txtboxAddEdit}" Text="{Binding Users.FullName}" IsEnabled="False"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Margin="25 0" Width="250">
+                <StackPanel>
+                    <Border Style="{StaticResource blockBorderAddEdit}">
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Примечание"/>
+                    </Border>
+                    <TextBox MaxHeight="100" Style="{StaticResource txtboxAddEdit}" Text="{Binding Remark}" TextWrapping="Wrap" MaxLength="20000"/>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel Margin="0 10">
+                        <StackPanel>
+                            <Border Style="{StaticResource blockBorderAddEdit}">
+                                <TextBlock Style="{StaticResource blockAddEdit}" Text="Жанр"/>
+                            </Border>
+                            <ComboBox  Height="30" x:Name="cmbGenres" DisplayMemberPath="GenreName" SelectionChanged="cmbGenres_SelectionChanged"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <DataGrid x:Name="datagridGenres" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Height="175" Width="250">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Название" Width="auto" Binding="{Binding Path=GenreName}"/>
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить" Click="BtnDelete_Click">
+                                    <MenuItem.Icon>
+                                        <Viewbox Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <Canvas Width="24" Height="24">
+                                                <Path Fill="{StaticResource ColorText100}" Data="M8.27,3L3,8.27V15.73L8.27,21H15.73L21,15.73V8.27L15.73,3M8.41,7L12,10.59L15.59,7L17,8.41L13.41,12L17,15.59L15.59,17L12,13.41L8.41,17L7,15.59L10.59,12L7,8.41"/>
+                                            </Canvas>
+                                        </Viewbox>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <Border Grid.Row="1" Background="{StaticResource ColorSecondary}" BorderBrush="{StaticResource ColorAccent}" CornerRadius="0 0 15 15" BorderThickness="0 3 0 0">
+            <DockPanel HorizontalAlignment="Right" Margin="30 0 30 0">
+                <Button Style="{StaticResource addButton}" Click="BtnSave_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Сохранить"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnSaveAndNew" Style="{StaticResource addAndNewButton}" Margin="15 0 0 0" Click="BtnSaveAndNew_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Сохранить и след."/>
+                    </StackPanel>
+                </Button>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Page>
+
