@@ -12,16 +12,13 @@ namespace BookStats.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BookStatuses
+    public partial class BookGenres
     {
-        public BookStatuses()
-        {
-            this.Requisitions = new HashSet<Requisitions>();
-        }
+        public string IDBook { get; set; }
+        public int IDGenre { get; set; }
+        public Nullable<int> Popularity { get; set; }
     
-        public int ID { get; set; }
-        public string StatusName { get; set; }
-    
-        public virtual ICollection<Requisitions> Requisitions { get; set; }
+        public virtual Books Books { get; set; }
+        public virtual Genres Genres { get; set; }
     }
 }

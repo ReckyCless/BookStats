@@ -12,24 +12,13 @@ namespace BookStats.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Books
+    public partial class RequisitionManagers
     {
-        public Books()
-        {
-            this.BookGenres = new HashSet<BookGenres>();
-            this.ReadingListBooks = new HashSet<ReadingListBooks>();
-        }
+        public int ManagerID { get; set; }
+        public int RequisitionID { get; set; }
+        public System.DateTime DateOfAdding { get; set; }
     
-        public string Article { get; set; }
-        public int UserID { get; set; }
-        public string Author { get; set; }
-        public string Name { get; set; }
-        public Nullable<System.DateTime> PublicationDate { get; set; }
-        public string Image { get; set; }
-        public string Remark { get; set; }
-    
-        public virtual ICollection<BookGenres> BookGenres { get; set; }
+        public virtual Requisitions Requisitions { get; set; }
         public virtual Users Users { get; set; }
-        public virtual ICollection<ReadingListBooks> ReadingListBooks { get; set; }
     }
 }

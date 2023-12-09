@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BookStats.Models;
+using BookStats.Windows;
 
 namespace BookStats.Pages.BooksPages
 {
@@ -32,6 +33,12 @@ namespace BookStats.Pages.BooksPages
             InitializeComponent();
 
             cmbFilter.SelectedIndex = 0;
+            List<Genres> genres = new List<Genres>();
+            var genre = new Genres();
+            genre.GenreName = "Без фильтрации";
+            genres.Add(genre);
+            genres.AddRange(App.Context.Genres.ToList());
+            cmbFilter.ItemsSource = genres;
             UpdateDataGrid();
         }
         //#region Update database on Events
@@ -50,13 +57,14 @@ namespace BookStats.Pages.BooksPages
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            /*            AddEditWindow windowAddEdit = new AddEditWindow();
-                        windowAddEdit.frameAddEdit.Navigate(new BooksAddEditPage(null));
-                        windowAddEdit.Closed += (s, EventArgs) =>
-                        {
-                            UpdateDataGrid();
-                        };
-                        windowAddEdit.Show();*/
+            AddEditWindow windowAddEdit = new AddEditWindow();
+            windowAddEdit.frameAddEdit.Navigate(new BooksAddEditPage(null));
+            windowAddEdit.Closed += (s, EventArgs) =>
+            {
+                UpdateDataGrid();
+            };
+            windowAddEdit.ShowDialog();
+
         }
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -121,24 +129,14 @@ namespace BookStats.Pages.BooksPages
         {
             datagridSourceList = App.Context.Books.ToList();
             // Filtration
-            switch (cmbFilter.SelectedIndex)
+            if (cmbFilter.SelectedIndex > 0)
             {
-                /*                case 0:
-                                    break;
-                                case 1:
-                                    datagridSourceList = datagridSourceList.Where(p => p.Name= == true).ToList();
-                                    break;
-                                case 2:
-                                    datagridSourceList = datagridSourceList.Where(p => p.IsRegistrationRequired == false).ToList();
-                                    break;
-                                default:
-                                    break;*/
+                datagridSourceList = datagridSourceList.Where(p => p.BookGenres.Any(x => x.Genres == (Genres)cmbFilter.SelectedItem)).ToList();
             }
             //Search
             datagridSourceList = datagridSourceList.Where(p => p.Name.ToLower().Contains(txtSearch.Text.ToLower()) ||
                 p.Author.ToLower().Contains(txtSearch.Text.ToLower()) ||
-                p.Article.ToLower().Contains(txtSearch.Text.ToLower()) ||
-                p.Price.ToString().Contains(txtSearch.Text.ToLower())
+                p.Article.ToLower().Contains(txtSearch.Text.ToLower()) 
             ).ToList();
 
             //Items Counter
@@ -338,16 +336,13 @@ namespace BookStats.Pages.BooksPages
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            /*            if (viewDataGrid.SelectedItems.Count > 0)
+            AddEditWindow windowAddEdit = new AddEditWindow();
+            windowAddEdit.frameAddEdit.Navigate(new BooksAddEditPage(LViewMain.SelectedItem as Books));
+            windowAddEdit.Closed += (s, EventArgs) =>
             {
-                AddEditWindow windowAddEdit = new AddEditWindow();
-                windowAddEdit.frameAddEdit.Navigate(new BooksAddEditPage(viewDataGrid.SelectedItem as Agreements));
-                windowAddEdit.Closed += (s, EventArgs) =>
-                {
-                    UpdateDataGrid();
-                };
-                windowAddEdit.Show();
-            }*/
+                UpdateDataGrid();
+            };
+            windowAddEdit.ShowDialog();
         }
     }
 }

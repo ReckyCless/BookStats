@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BookStats.Pages.BooksPages"
       mc:Ignorable="d" 
-      d:DesignHeight="720" d:DesignWidth="800"
+      d:DesignHeight="400" d:DesignWidth="1200"
       Title="Книги. Добавление">
     <Grid>
         <Grid.RowDefinitions>
@@ -18,49 +18,37 @@
                     <Border Style="{StaticResource blockBorderAddEdit}">
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Артикул"/>
                     </Border>
-                    <TextBox Style="{StaticResource txtboxAddEdit}" x:Name="txtAgreementNumber" Text="{Binding Article}" PreviewKeyDown="TextBox_PreviewKeyDown" 
+                    <TextBox Style="{StaticResource txtboxAddEdit}" x:Name="txtArticle" Text="{Binding Article}" PreviewKeyDown="TextBox_PreviewKeyDown" 
                             DataObject.Pasting="ArticlePastingHandler" PreviewTextInput="ArticleValidationTextBox" MaxLength="6"/>
                 </StackPanel>
                 <StackPanel>
                     <Border Style="{StaticResource blockBorderAddEdit}">
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Название"/>
                     </Border>
-                    <TextBox MaxHeight="50" Style="{StaticResource txtboxAddEdit}" Text="{Binding Title}" TextWrapping="Wrap" DataObject.Pasting="TextPastingHandler" PreviewTextInput="TextValidationTextBox" MaxLength="2000"/>
+                    <TextBox MaxHeight="50" Style="{StaticResource txtboxAddEdit}" Text="{Binding Name}" TextWrapping="Wrap" DataObject.Pasting="TextPastingHandler" PreviewTextInput="TextValidationTextBox" MaxLength="2000"/>
                 </StackPanel>
-                <StackPanel Margin="0 10">
+                <StackPanel>
                     <Border Style="{StaticResource blockBorderAddEdit}">
-                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Автор"/>
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Название"/>
                     </Border>
-                    <ComboBox Height="30" x:Name="cmbAuthor" SelectedItem="{Binding Author}" DisplayMemberPath="StatusName" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+                    <TextBox MaxHeight="50" Style="{StaticResource txtboxAddEdit}" Text="{Binding Author}" TextWrapping="Wrap" DataObject.Pasting="TextPastingHandler" PreviewTextInput="TextValidationTextBox" MaxLength="2000"/>
                 </StackPanel>
                 <StackPanel>
                     <Border Style="{StaticResource blockBorderAddEdit}">
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Дата/Год выпуска"/>
                     </Border>
                     <Border Style="{StaticResource blockBorderBottomAddEdit}">
-                        <DatePicker x:Name="dpAgreementDate" BorderThickness="0" Background="Transparent" SelectedDate="{Binding DateOfAgreement}"/>
+                        <DatePicker x:Name="dpPublicationDate" BorderThickness="0" Background="Transparent" SelectedDate="{Binding PublicationDate}"/>
                     </Border>
                 </StackPanel>
-                <StackPanel Margin="0 10">
-                    <Border Style="{StaticResource blockBorderAddEdit}">
-                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Примерная стоимость"/>
-                    </Border>
-                    <TextBox Style="{StaticResource txtboxAddEdit}" Text="{Binding Price}" PreviewKeyDown="TextBox_PreviewKeyDown" DataObject.Pasting="NumberPastingHandler" PreviewTextInput="NumberValidationTextBox" MaxLength="30"/>
-                </StackPanel>
-                <StackPanel>
-                    <Border Style="{StaticResource blockBorderAddEdit}">
-                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Заявитель"/>
-                    </Border>
-                    <TextBox Style="{StaticResource txtboxAddEdit}" Text="{Binding Users.FullName}" IsEnabled="False"/>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Margin="25 0" Width="250">
                 <StackPanel>
                     <Border Style="{StaticResource blockBorderAddEdit}">
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Примечание"/>
                     </Border>
                     <TextBox MaxHeight="100" Style="{StaticResource txtboxAddEdit}" Text="{Binding Remark}" TextWrapping="Wrap" MaxLength="20000"/>
                 </StackPanel>
+            </StackPanel>
+            <StackPanel Margin="25 0" Width="250">
                 <StackPanel>
                     <StackPanel Margin="0 10">
                         <StackPanel>
@@ -88,6 +76,16 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Border Margin="5" Height="200" Width="200" BorderBrush="{StaticResource ColorAccent}" BorderThickness="1">
+                            <Image Name="ImagePreview"/>
+                        </Border>
+                        <Button Height="30" Width="200" Margin="5" Name="btnSelectImage" Click="BtnSelectImage_Click" Content="Выбрать фотографию"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BookStats.Models
 {
@@ -14,15 +15,15 @@ namespace BookStats.Models
             get
             {
                 string directory = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources"));
-                if (!Directory.Exists(directory))
+                if (!Directory.Exists(directory + @"/Images"))
                 {
-                    Directory.CreateDirectory(directory);
+                    Directory.CreateDirectory(directory + @"/Images");
                 }
 
                 if (Image != null && Image != "")
                 {
-                    directory = directory + @"\products\" + Image;
-                    if (!Directory.Exists(ImagePathInText))
+                    directory = directory + @"/Images/" + Image;
+                    if (Directory.Exists(ImagePathInText))
                         return directory;
                     else
                         return @"../Resources/default.png";
@@ -33,11 +34,19 @@ namespace BookStats.Models
                 }
             }
         }
-        public string PriceInText
+        public string yearOfPublishing
         {
             get
             {
-                return "Цена: " + Price.ToString("N2") + " ₽";
+                if (PublicationDate.HasValue)
+                {
+                    return "Год выпуска: " + PublicationDate.Value.Year;
+
+                }
+                else
+                {
+                    return "Год выпуска - не указан";
+                }
             }
         }
         public string AuthorInText
@@ -47,5 +56,46 @@ namespace BookStats.Models
                 return "Автор: " + Author.ToString();
             }
         }
+        public string genresInText
+        {
+            get
+            {
+                string txt = string.Empty;
+                foreach (var elem in BookGenres)
+                {
+                    txt += elem.Genres.GenreName + ", ";
+                }
+                txt.TrimEnd(' ', ',');
+                if (txt.Length > 0)
+                {
+                    txt = txt.Insert(0, "Жанры: ");
+                    return txt;
+                }
+                else
+                {
+                    return "Жанров - не найдено";
+                }
+            }
+        }
+
+        public Visibility visibilityControl
+        {
+            get
+            {
+                if (App.CurrentUser != null)
+                {
+                    switch (App.CurrentUser.Role)
+                    {
+                        case 1:
+                            return Visibility.Visible;
+                        case 2:
+                            return Visibility.Collapsed;
+                        case 3:
+                            return Visibility.Visible;
+                    }
+                }
+                return Visibility.Collapsed;
+            }
+        } 
     }
 }

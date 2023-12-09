@@ -90,6 +90,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\BookGenres.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Books.cs">
       <DependentUpon>BooksStatsModel.tt</DependentUpon>
     </Compile>
@@ -110,6 +113,21 @@
       <DependentUpon>BooksStatsModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\BookStatuses.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Genres.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReadingListBooks.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReadingLists.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RequisitionManagers.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Requisitions.cs">
       <DependentUpon>BooksStatsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Roles.cs">
@@ -182,20 +200,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\default.png" />
+    <Resource Include="Resources\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Models\BooksStatsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BooksStatsModel.Context.cs</LastGenOutput>
       <DependentUpon>BooksStatsModel.edmx</DependentUpon>
+      <LastGenOutput>BooksStatsModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\BooksStatsModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BooksStatsModel.edmx</DependentUpon>
       <LastGenOutput>BooksStatsModel.cs</LastGenOutput>
     </Content>
-    <Resource Include="Resources\default.png" />
-    <Resource Include="Resources\Logo.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

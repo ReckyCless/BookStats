@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BookStats.Models;
+using Microsoft.Win32;
 
 namespace BookStats.Pages.BooksPages
 {
@@ -25,11 +27,16 @@ namespace BookStats.Pages.BooksPages
         private Books currentElem = new Books();
 
         bool isEditing = false;
-        string agreementNumberBefore = string.Empty;
+
+        string pathToImage = string.Empty;
+        string pathToImageShort = string.Empty;
+        string directory = System.IO.Path.GetFullPath(System.IO.Path.Combine(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\"), @"Resources")); // Directory
+        BitmapImage imagePreviewBit = new BitmapImage();
+
         public List<BookGenres> bookGenresList = new List<BookGenres>();
         public List<Genres> genresContext = App.Context.Genres.ToList();
         public List<Genres> datagridList = new List<Genres>();
-        public List<Genres> genresAvailableList = genresContext;
+        public List<Genres> genresAvailableList = App.Context.Genres.ToList();
         public BooksAddEditPage(Books elemData)
         {
             InitializeComponent();
@@ -40,10 +47,10 @@ namespace BookStats.Pages.BooksPages
                 btnSaveAndNew.Visibility = Visibility.Collapsed;
                 Title = "Книги. Редактирование";
                 currentElem = elemData;
-                agreementNumberBefore = elemData.AgreementNumber;
-                txtAgreementNumber.IsEnabled = false;
 
-                bookGenresList = App.Context.BookGenres.Where(p => p.Book.Article == currentElem.Article).ToList();
+                txtArticle.IsEnabled = false;
+
+                bookGenresList = App.Context.BookGenres.Where(p => p.Books.Article == currentElem.Article).ToList();
                 foreach (var item in bookGenresList)
                     datagridList.Add(item.Genres);
             }
@@ -58,8 +65,24 @@ namespace BookStats.Pages.BooksPages
             dpPublicationDate.DisplayDateEnd = DateTime.Today;
 
             cmbGenres.ItemsSource = App.Context.Genres.ToList();
-            CheckSpecialities();
+            CheckGenres();
 
+
+            if (currentElem.Image != null && currentElem.Image != "")
+            {
+                pathToImage = directory + @"/Images/" + currentElem.Image;
+
+                if (!Directory.Exists(pathToImage))
+                    pathToImage = System.IO.Path.Combine(directory, @"default.png");
+
+                pathToImageShort = currentElem.Image;
+                ImagePreview.Source = new BitmapImage(new Uri(pathToImage, UriKind.Absolute));
+            }
+            else
+            {
+                pathToImage = System.IO.Path.Combine(directory, @"default.png");
+                ImagePreview.Source = new BitmapImage(new Uri(pathToImage, UriKind.Absolute));
+            }
         }
 
         #region Regexes
@@ -89,6 +112,23 @@ namespace BookStats.Pages.BooksPages
         {
             Regex regex = new Regex(@"^[0-9a-zA-Z]");
             e.Handled = !regex.IsMatch(e.Text);
+        }
+
+        private void ArticlePastingHandler(object sender, DataObjectPastingEventArgs e)
+        {
+            Regex regex = new Regex(@"^[0-9a-zA-Z]+$");
+            if (e.DataObject.GetDataPresent(typeof(String)))
+            {
+                String text = (String)e.DataObject.GetData(typeof(String));
+                if (!regex.IsMatch(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
         }
         private void ArticleValidationTextBox(object sender, DataObjectPastingEventArgs e)
         {
@@ -149,14 +189,14 @@ namespace BookStats.Pages.BooksPages
                         datagridList.Remove(item);
                         foreach (var elem in bookGenresList)
                         {
-                            if (elem.Specialties == item)
+                            if (elem.Genres == item)
                                 App.Context.BookGenres.Remove(elem);
                         }
                     }
                     try
                     {
                         MessageBox.Show("Данные удалены!");
-                        CheckSpecialities();
+                        CheckGenres();
                     }
                     catch (Exception ex)
                     {
@@ -165,7 +205,7 @@ namespace BookStats.Pages.BooksPages
                 }
             }
         }
-        private void CheckSpecialities()
+        private void CheckGenres()
         {
             genresAvailableList = genresContext;
             if (datagridList.Count > 0)
@@ -193,24 +233,29 @@ namespace BookStats.Pages.BooksPages
             datagridGenres.ItemsSource = datagridList;
             datagridGenres.Items.Refresh();
         }
-        private void cmbSpecialities_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            CheckSpecialities();
-        }
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
+            currentElem.Image = pathToImageShort;
+
             // Check if fields are filled
             StringBuilder err = new StringBuilder();
             if (string.IsNullOrWhiteSpace(currentElem.Article))
                 err.AppendLine("Укажите артикул");
+            else if (!isEditing && App.Context.Books.Any(p => p.Article == currentElem.Article))
+                err.AppendLine("Артикль не может повторяться");
+            if (string.IsNullOrWhiteSpace(currentElem.Name))
+                err.AppendLine("Укажите название");
+            if (string.IsNullOrWhiteSpace(currentElem.Author))
+                err.AppendLine("Укажите автора");
+
             if (err.Length > 0)
             {
                 MessageBox.Show(err.ToString(), "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            currentElem.Title = currentElem.Title.Trim();
-            currentElem.Title = Regex.Replace(currentElem.Title, @"\s+", " ");
+            currentElem.Name = currentElem.Name.Trim();
+            currentElem.Name = Regex.Replace(currentElem.Name, @"\s+", " ");
 
 
             if (currentElem.Remark != null)
@@ -229,14 +274,13 @@ namespace BookStats.Pages.BooksPages
                 App.Context.SaveChanges();
                 foreach (var item in datagridList)
                 {
-                    if (!agreementSpecialityList.Any(p => p.Genres == item))
+                    if (!bookGenresList.Any(p => p.Genres == item))
                     {
-                        AgreementSpeciality agreementspeciality = new AgreementSpeciality();
-                        agreementspeciality.SpecialityID = item.SpecialityNumber;
-                        agreementspeciality.Specialties = item;
-                        agreementspeciality.AgreementID = currentElem.AgreementNumber;
-                        agreementspeciality.DateOfAdding = null;
-                        App.Context.AgreementSpeciality.Add(agreementspeciality);
+                        BookGenres agreementspeciality = new BookGenres();
+                        agreementspeciality.IDGenre = item.ID;
+                        agreementspeciality.Genres = item;
+                        agreementspeciality.IDBook = currentElem.Article;
+                        App.Context.BookGenres.Add(agreementspeciality);
                     }
                 }
                 App.Context.SaveChanges();
@@ -253,10 +297,17 @@ namespace BookStats.Pages.BooksPages
         }
         private void BtnSaveAndNew_Click(object sender, RoutedEventArgs e)
         {
+            currentElem.Image = pathToImageShort;
             // Check if fields are filled
             StringBuilder err = new StringBuilder();
             if (string.IsNullOrWhiteSpace(currentElem.Article))
                 err.AppendLine("Укажите артикул");
+            else if (!isEditing && App.Context.Books.Any(p => p.Article == currentElem.Article))
+                err.AppendLine("Артикль не может повторяться");
+            if (string.IsNullOrWhiteSpace(currentElem.Name))
+                err.AppendLine("Укажите название");
+            if (string.IsNullOrWhiteSpace(currentElem.Author))
+                err.AppendLine("Укажите автора");
 
 
             if (err.Length > 0)
@@ -265,8 +316,8 @@ namespace BookStats.Pages.BooksPages
                 return;
             }
 
-            currentElem.Title = currentElem.Title.Trim();
-            currentElem.Title = Regex.Replace(currentElem.Title, @"\s+", " ");
+            currentElem.Name = currentElem.Name.Trim();
+            currentElem.Name = Regex.Replace(currentElem.Name, @"\s+", " ");
 
 
             if (currentElem.Remark != null)
@@ -292,8 +343,9 @@ namespace BookStats.Pages.BooksPages
                 foreach (var item in datagridList)
                 {
                     BookGenres bookgenres = new BookGenres();
-                    bookgenres.GenreID = item.ID;
-                    bookgenres.BookID = currentElem.Article;
+                    bookgenres.IDGenre = item.ID;
+                    bookgenres.Genres = item;
+                    bookgenres.IDBook = currentElem.Article;
                     App.Context.BookGenres.Add(bookgenres);
                 }
                 datagridList = new List<Genres>();
@@ -309,6 +361,37 @@ namespace BookStats.Pages.BooksPages
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
+        private void cmbGenres_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CheckGenres();
+        }
+
+        private void BtnSelectImage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog { Filter = "Image | *.png; *.jpg; *.jpeg" };
+            if (ofd.ShowDialog() == true)
+            {
+                string filename = ofd.SafeFileName;
+                string filepath = ofd.FileName;
+                pathToImage = directory + @"\Images\" + filename;
+                if (isEditing)
+                {
+                    if (currentElem.Image == @"\Images\" + filename)
+                    {
+                        pathToImage = directory + @"\Images\" + "copy_" + filename;
+                        pathToImageShort = @"\Images\" + "copy_" + filename;
+                    }
+                }
+                else
+                {
+                    pathToImageShort = filename;
+                }
+
+                File.Copy(filepath, pathToImage, true);
+                ImagePreview.Source = new BitmapImage(new Uri(pathToImage, UriKind.Absolute));
             }
         }
     }
