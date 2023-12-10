@@ -16,10 +16,10 @@ namespace BookStats.Models
     {
         public Users()
         {
-            this.Books = new HashSet<Books>();
             this.ReadingLists = new HashSet<ReadingLists>();
             this.RequisitionManagers = new HashSet<RequisitionManagers>();
             this.Requisitions = new HashSet<Requisitions>();
+            this.NotificationTable = new HashSet<NotificationTable>();
         }
     
         public int ID { get; set; }
@@ -33,10 +33,10 @@ namespace BookStats.Models
         public System.DateTime DateOfAdding { get; set; }
         public int Role { get; set; }
     
-        public virtual ICollection<Books> Books { get; set; }
         public virtual ICollection<ReadingLists> ReadingLists { get; set; }
         public virtual ICollection<RequisitionManagers> RequisitionManagers { get; set; }
         public virtual ICollection<Requisitions> Requisitions { get; set; }
         public virtual Roles Roles { get; set; }
+        public virtual ICollection<NotificationTable> NotificationTable { get; set; }
     }
 }

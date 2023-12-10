@@ -4,21 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="062f033b8209494691d14d3ae7aacdff" Name="Diagram1" ZoomLevel="64">
+      <Diagram DiagramId="062f033b8209494691d14d3ae7aacdff" Name="Diagram1" ZoomLevel="103">
         <EntityTypeShape EntityType="BooksStatsDBModel.BookGenres" Width="1.5" PointX="7.5" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="BooksStatsDBModel.Books" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BooksStatsDBModel.BookStatuses" Width="1.5" PointX="3" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BooksStatsDBModel.Books" Width="1.5" PointX="4.125" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BooksStatsDBModel.BookStatuses" Width="1.5" PointX="2.125" PointY="11.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.Genres" Width="1.5" PointX="5.25" PointY="16.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.ReadingListBooks" Width="1.5" PointX="7.5" PointY="9.25" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.ReadingLists" Width="1.5" PointX="5.25" PointY="9.25" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.RequisitionManagers" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="BooksStatsDBModel.Requisitions" Width="1.5" PointX="5.25" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BooksStatsDBModel.Requisitions" Width="1.5" PointX="6.875" PointY="12" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.Roles" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.Users" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
         <AssociationConnector Association="BooksStatsDBModel.FK_BookGenres_Books" ManuallyRouted="false" />
         <AssociationConnector Association="BooksStatsDBModel.FK_BookGenres_Genres" ManuallyRouted="false" />
-        <AssociationConnector Association="BooksStatsDBModel.FK_Books_Users" ManuallyRouted="false" />
         <AssociationConnector Association="BooksStatsDBModel.FK_ReadingListBooks_Books" ManuallyRouted="false" />
         <AssociationConnector Association="BooksStatsDBModel.FK_Requisitions_BookStatuses" ManuallyRouted="false" />
         <AssociationConnector Association="BooksStatsDBModel.FK_ReadingListBooks_ReadingLists" ManuallyRouted="false" />
@@ -27,6 +26,10 @@
         <AssociationConnector Association="BooksStatsDBModel.FK_RequisitionManagers_Users" ManuallyRouted="false" />
         <AssociationConnector Association="BooksStatsDBModel.FK_Requisitions_Users" ManuallyRouted="false" />
         <AssociationConnector Association="BooksStatsDBModel.FK_Users_Roles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BooksStatsDBModel.NotificationTable" Width="1.5" PointX="10.125" PointY="9.625" />
+        <AssociationConnector Association="BooksStatsDBModel.FK_Requisitions_Books" />
+        <AssociationConnector Association="BooksStatsDBModel.FK_NotificationTable_Requisitions" />
+        <AssociationConnector Association="BooksStatsDBModel.FK_NotificationTable_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,9 @@ namespace BookStats.Pages.BooksPages
 
         string pathToImage = string.Empty;
         string pathToImageShort = string.Empty;
-        string directory = System.IO.Path.GetFullPath(System.IO.Path.Combine(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\"), @"Resources")); // Directory
+        string tempPathImage = string.Empty;
+        string directory = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources")); // Directory
+
         BitmapImage imagePreviewBit = new BitmapImage();
 
         public List<BookGenres> bookGenresList = new List<BookGenres>();
@@ -71,9 +74,6 @@ namespace BookStats.Pages.BooksPages
             if (currentElem.Image != null && currentElem.Image != "")
             {
                 pathToImage = directory + @"/Images/" + currentElem.Image;
-
-                if (!Directory.Exists(pathToImage))
-                    pathToImage = System.IO.Path.Combine(directory, @"default.png");
 
                 pathToImageShort = currentElem.Image;
                 ImagePreview.Source = new BitmapImage(new Uri(pathToImage, UriKind.Absolute));
@@ -235,6 +235,15 @@ namespace BookStats.Pages.BooksPages
         }
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (string.IsNullOrEmpty(tempPathImage))
+                    File.Copy(tempPathImage, pathToImage, true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             currentElem.Image = pathToImageShort;
 
             // Check if fields are filled
@@ -297,6 +306,16 @@ namespace BookStats.Pages.BooksPages
         }
         private void BtnSaveAndNew_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (string.IsNullOrEmpty(tempPathImage))
+                    File.Copy(tempPathImage, pathToImage, true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             currentElem.Image = pathToImageShort;
             // Check if fields are filled
             StringBuilder err = new StringBuilder();
@@ -332,7 +351,6 @@ namespace BookStats.Pages.BooksPages
                 currentElem.Remark = Regex.Replace(currentElem.Remark, @"\s+", " ");
             }
 
-
             App.Context.Books.Add(currentElem);
 
             try
@@ -348,6 +366,7 @@ namespace BookStats.Pages.BooksPages
                     bookgenres.IDBook = currentElem.Article;
                     App.Context.BookGenres.Add(bookgenres);
                 }
+
                 datagridList = new List<Genres>();
                 genresAvailableList = genresContext;
                 datagridGenres.ItemsSource = datagridList;
@@ -375,14 +394,19 @@ namespace BookStats.Pages.BooksPages
             if (ofd.ShowDialog() == true)
             {
                 string filename = ofd.SafeFileName;
-                string filepath = ofd.FileName;
+                tempPathImage = ofd.FileName;
                 pathToImage = directory + @"\Images\" + filename;
                 if (isEditing)
                 {
-                    if (currentElem.Image == @"\Images\" + filename)
+                    if (pathToImageShort == filename)
                     {
-                        pathToImage = directory + @"\Images\" + "copy_" + filename;
-                        pathToImageShort = @"\Images\" + "copy_" + filename;
+                        filename = "copy_" + filename;
+                        pathToImage = directory + @"\Images\" + filename;
+                        pathToImageShort = filename;
+                    }
+                    else
+                    {
+                        pathToImageShort = filename;
                     }
                 }
                 else
@@ -390,8 +414,15 @@ namespace BookStats.Pages.BooksPages
                     pathToImageShort = filename;
                 }
 
-                File.Copy(filepath, pathToImage, true);
-                ImagePreview.Source = new BitmapImage(new Uri(pathToImage, UriKind.Absolute));
+                try
+                {
+                    ImagePreview.Source = new BitmapImage(new Uri(tempPathImage, UriKind.Absolute));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
             }
         }
     }

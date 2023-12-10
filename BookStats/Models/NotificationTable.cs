@@ -12,24 +12,13 @@ namespace BookStats.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Requisitions
+    public partial class NotificationTable
     {
-        public Requisitions()
-        {
-            this.RequisitionManagers = new HashSet<RequisitionManagers>();
-            this.NotificationTable = new HashSet<NotificationTable>();
-        }
-    
-        public int ID { get; set; }
+        public int RequisitionID { get; set; }
         public int UserID { get; set; }
-        public string RequestedBook { get; set; }
-        public int RequisitionStatus { get; set; }
-        public Nullable<int> Priority { get; set; }
+        public bool IsChecked { get; set; }
     
-        public virtual BookStatuses BookStatuses { get; set; }
-        public virtual ICollection<RequisitionManagers> RequisitionManagers { get; set; }
+        public virtual Requisitions Requisitions { get; set; }
         public virtual Users Users { get; set; }
-        public virtual Books Books { get; set; }
-        public virtual ICollection<NotificationTable> NotificationTable { get; set; }
     }
 }

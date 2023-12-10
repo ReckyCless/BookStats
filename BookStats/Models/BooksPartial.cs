@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,26 +10,21 @@ namespace BookStats.Models
 {
     partial class Books
     {
+
         public string ImagePathInText
         {
             get
             {
                 string directory = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources"));
-                if (!Directory.Exists(directory + @"/Images"))
-                {
-                    Directory.CreateDirectory(directory + @"/Images");
-                }
 
                 if (Image != null && Image != "")
                 {
                     directory = directory + @"/Images/" + Image;
-                    if (Directory.Exists(ImagePathInText))
-                        return directory;
-                    else
-                        return @"../Resources/default.png";
+                    return directory;
                 }
                 else
                 {
+                    Debug.Print("B");
                     return @"../Resources/default.png";
                 }
             }

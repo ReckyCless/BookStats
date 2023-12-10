@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BookStats.Pages.BooksPages"
       mc:Ignorable="d" 
-      d:DesignHeight="400" d:DesignWidth="1200"
+      d:DesignHeight="500" d:DesignWidth="1200"
       Title="Книги. Добавление">
     <Grid>
         <Grid.RowDefinitions>
@@ -21,7 +21,7 @@
                     <TextBox Style="{StaticResource txtboxAddEdit}" x:Name="txtArticle" Text="{Binding Article}" PreviewKeyDown="TextBox_PreviewKeyDown" 
                             DataObject.Pasting="ArticlePastingHandler" PreviewTextInput="ArticleValidationTextBox" MaxLength="6"/>
                 </StackPanel>
-                <StackPanel>
+                <StackPanel Margin="0 10">
                     <Border Style="{StaticResource blockBorderAddEdit}">
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Название"/>
                     </Border>
@@ -29,17 +29,23 @@
                 </StackPanel>
                 <StackPanel>
                     <Border Style="{StaticResource blockBorderAddEdit}">
-                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Название"/>
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Автор"/>
                     </Border>
                     <TextBox MaxHeight="50" Style="{StaticResource txtboxAddEdit}" Text="{Binding Author}" TextWrapping="Wrap" DataObject.Pasting="TextPastingHandler" PreviewTextInput="TextValidationTextBox" MaxLength="2000"/>
                 </StackPanel>
-                <StackPanel>
+                <StackPanel  Margin="0 10">
                     <Border Style="{StaticResource blockBorderAddEdit}">
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Дата/Год выпуска"/>
                     </Border>
                     <Border Style="{StaticResource blockBorderBottomAddEdit}">
                         <DatePicker x:Name="dpPublicationDate" BorderThickness="0" Background="Transparent" SelectedDate="{Binding PublicationDate}"/>
                     </Border>
+                </StackPanel>
+                <StackPanel>
+                    <Border Style="{StaticResource blockBorderAddEdit}">
+                        <TextBlock Style="{StaticResource blockAddEdit}" Text="Ссылка-источник"/>
+                    </Border>
+                    <TextBox Style="{StaticResource txtboxAddEdit}" Text="{Binding SourceLink}" MaxLength="3000"/>
                 </StackPanel>
                 <StackPanel>
                     <Border Style="{StaticResource blockBorderAddEdit}">
@@ -50,7 +56,7 @@
             </StackPanel>
             <StackPanel Margin="25 0" Width="250">
                 <StackPanel>
-                    <StackPanel Margin="0 10">
+                    <StackPanel Margin="0 0 0 10">
                         <StackPanel>
                             <Border Style="{StaticResource blockBorderAddEdit}">
                                 <TextBlock Style="{StaticResource blockAddEdit}" Text="Жанр"/>

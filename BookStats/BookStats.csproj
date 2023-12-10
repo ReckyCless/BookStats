@@ -70,6 +70,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\RequisitionsPages\RequisitionsAddEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\RequisitionsPages\RequisitionsViewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ToolPages\AuthPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,6 +126,9 @@
     <Compile Include="Models\Genres.cs">
       <DependentUpon>BooksStatsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\NotificationTable.cs">
+      <DependentUpon>BooksStatsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReadingListBooks.cs">
       <DependentUpon>BooksStatsModel.tt</DependentUpon>
     </Compile>
@@ -145,11 +156,18 @@
     <Compile Include="Models\Users.cs">
       <DependentUpon>BooksStatsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UsersPartial.cs" />
     <Compile Include="Pages\BooksPages\BooksAddEditPage.xaml.cs">
       <DependentUpon>BooksAddEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\BooksPages\BooksViewPage.xaml.cs">
       <DependentUpon>BooksViewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RequisitionsPages\RequisitionsAddEditPage.xaml.cs">
+      <DependentUpon>RequisitionsAddEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RequisitionsPages\RequisitionsViewPage.xaml.cs">
+      <DependentUpon>RequisitionsViewPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ToolPages\AuthPage.xaml.cs">
       <DependentUpon>AuthPage.xaml</DependentUpon>
@@ -217,6 +235,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -18,18 +18,19 @@ namespace BookStats.Models
         {
             this.BookGenres = new HashSet<BookGenres>();
             this.ReadingListBooks = new HashSet<ReadingListBooks>();
+            this.Requisitions = new HashSet<Requisitions>();
         }
     
         public string Article { get; set; }
-        public int UserID { get; set; }
         public string Author { get; set; }
         public string Name { get; set; }
         public Nullable<System.DateTime> PublicationDate { get; set; }
         public string Image { get; set; }
         public string Remark { get; set; }
+        public string SourceLink { get; set; }
     
         public virtual ICollection<BookGenres> BookGenres { get; set; }
-        public virtual Users Users { get; set; }
         public virtual ICollection<ReadingListBooks> ReadingListBooks { get; set; }
+        public virtual ICollection<Requisitions> Requisitions { get; set; }
     }
 }
