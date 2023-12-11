@@ -237,7 +237,7 @@ namespace BookStats.Pages.BooksPages
         {
             try
             {
-                if (string.IsNullOrEmpty(tempPathImage))
+                if (!string.IsNullOrEmpty(tempPathImage))
                     File.Copy(tempPathImage, pathToImage, true);
             }
             catch (Exception ex)
@@ -308,7 +308,7 @@ namespace BookStats.Pages.BooksPages
         {
             try
             {
-                if (string.IsNullOrEmpty(tempPathImage))
+                if (!string.IsNullOrEmpty(tempPathImage))
                     File.Copy(tempPathImage, pathToImage, true);
             }
             catch (Exception ex)
