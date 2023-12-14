@@ -50,9 +50,9 @@
                     <Button Style="{StaticResource filterCloseButton}" HorizontalAlignment="Right" Margin="0 0 10 0" Click="deleteFiltersButton_Click" ToolTip="Сбросить фильтры">
                         <TextBlock Text="X" Foreground="{StaticResource ColorText0}"/>
                     </Button>
-                    <Button Style="{StaticResource addButton}" HorizontalAlignment="Right" Margin="0 0 15 0" Click="SaveButton_Click">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Foreground="{StaticResource ColorText0}" Text="Сохранить данные"/>
+                    <Button x:Name="btnStatusUpdate" Style="{StaticResource addButton}" HorizontalAlignment="Right" Margin="0 0 15 0" Click="UpdateButtonStatus_Click">
+                        <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Foreground="{StaticResource ColorText0}" Text="Обновить статус"/>
                         </StackPanel>
                     </Button>
                     <Button Style="{StaticResource addButton}" HorizontalAlignment="Right" Margin="0 0 30 0" Click="AddButton_Click">

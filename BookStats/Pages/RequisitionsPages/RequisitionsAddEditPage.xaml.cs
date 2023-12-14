@@ -68,7 +68,18 @@ namespace BookStats.Pages.RequisitionsPages
                     requisitionmanagers.Users = App.CurrentUser;
                     requisitionmanagers.Requisitions = currentElem;
                     requisitionmanagers.DateOfAdding = DateTime.Now;
-                    App.Context.RequisitionManagers.Add(requisitionmanagers);
+                    if (!App.Context.RequisitionManagers.Any(p => p.Users == requisitionmanagers.Users && p.Requisitions == requisitionmanagers.Requisitions))
+                    {
+                        currentElem.RequisitionManagers.Add(requisitionmanagers);
+                        App.Context.RequisitionManagers.Add(requisitionmanagers);
+                    }
+
+                    var notification = new NotificationTable();
+                    notification.Requisitions = currentElem;
+                    notification.Users = requisitionmanagers.Users;
+                    notification.IsChecked = false;
+
+                    App.Context.NotificationTable.Add(notification);
                 }
             }
             DataContext = currentElem;

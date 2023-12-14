@@ -40,6 +40,18 @@ namespace BookStats.Pages.RequisitionsPages
             cmbfilterList.AddRange(App.Context.BookStatuses.ToList());
             cmbFilter.ItemsSource = cmbfilterList;
             UpdateDataGrid();
+
+            if (App.CurrentUser != null)
+            {
+                if (App.CurrentUser.Role != 2)
+                {
+                    btnStatusUpdate.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    btnStatusUpdate.Visibility = Visibility.Visible;
+                }
+            }
         }
         //#region Update database on Events
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -109,18 +121,19 @@ namespace BookStats.Pages.RequisitionsPages
                 }
             }
         }
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void UpdateButtonStatus_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (LViewMain.SelectedItems.Count > 0)
             {
-                App.Context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                if (ex.InnerException != null)
-                    MessageBox.Show(ex.InnerException.ToString());
-                RejectChanges();
+                var dialog = new ModalWindow(LViewMain.SelectedItems as List<Requisitions>);
+                if (dialog.ShowDialog() == true)
+                {
+                    UpdateDataGrid();
+                }
+                else
+                {
+                    RejectChanges();
+                }
             }
         }
 

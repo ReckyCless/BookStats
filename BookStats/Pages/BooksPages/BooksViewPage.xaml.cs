@@ -40,6 +40,18 @@ namespace BookStats.Pages.BooksPages
             genres.AddRange(App.Context.Genres.ToList());
             cmbFilter.ItemsSource = genres;
             UpdateDataGrid();
+
+            if (App.CurrentUser != null)
+            {
+                if (App.CurrentUser.Role == 2)
+                {
+                    btnAdd.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    btnAdd.Visibility= Visibility.Visible;
+                }
+            }
         }
         //#region Update database on Events
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -70,23 +82,29 @@ namespace BookStats.Pages.BooksPages
         {
             if (LViewMain.SelectedItems.Count > 0)
             {
-                var elemsToDelete = LViewMain.SelectedItems.Cast<Books>().ToList();
-                if (MessageBox.Show($"Вы точно хотите удалить следующие {elemsToDelete.Count()} элементов?", "Внимание",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (App.CurrentUser != null)
                 {
-                    try
+                    if (App.CurrentUser.Role == 1)
                     {
-                        foreach (var elem in elemsToDelete)
+                        var elemsToDelete = LViewMain.SelectedItems.Cast<Books>().ToList();
+                        if (MessageBox.Show($"Вы точно хотите удалить следующие {elemsToDelete.Count()} элементов?", "Внимание",
+                            MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                         {
-                            App.Context.Books.Remove(elem);
+                            try
+                            {
+                                foreach (var elem in elemsToDelete)
+                                {
+                                    App.Context.Books.Remove(elem);
+                                }
+                                App.Context.SaveChanges();
+                                MessageBox.Show("Данные удалены!");
+                                UpdateDataGrid();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message.ToString());
+                            }
                         }
-                        App.Context.SaveChanges();
-                        MessageBox.Show("Данные удалены!");
-                        UpdateDataGrid();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message.ToString());
                     }
                 }
             }
@@ -357,13 +375,19 @@ namespace BookStats.Pages.BooksPages
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            AddEditWindow windowAddEdit = new AddEditWindow();
-            windowAddEdit.frameAddEdit.Navigate(new BooksAddEditPage(LViewMain.SelectedItem as Books));
-            windowAddEdit.Closed += (s, EventArgs) =>
+            if (App.CurrentUser != null)
             {
-                UpdateDataGrid();
-            };
-            windowAddEdit.ShowDialog();
+                if (App.CurrentUser.Role != 2)
+                {
+                    AddEditWindow windowAddEdit = new AddEditWindow();
+                    windowAddEdit.frameAddEdit.Navigate(new BooksAddEditPage(LViewMain.SelectedItem as Books));
+                    windowAddEdit.Closed += (s, EventArgs) =>
+                    {
+                        UpdateDataGrid();
+                    };
+                    windowAddEdit.ShowDialog();
+                }
+            }
         }
 
         private void CBoxSortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
