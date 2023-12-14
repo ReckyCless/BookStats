@@ -33,6 +33,18 @@
                     </ComboBox>
                 </Grid>
 
+                <Grid Margin="10 0">
+                    <ComboBox x:Name="cmbSort" SelectionChanged="CBoxSortBy_SelectionChanged" MinWidth="150" MaxWidth="300" Height="40" Width="auto">
+                        <ComboBoxItem Content="Без сортировки"></ComboBoxItem>
+                        <ComboBoxItem Content="Наименование (По возрастанию)"></ComboBoxItem>
+                        <ComboBoxItem Content="Наименование (По убыванию)"></ComboBoxItem>
+                        <ComboBoxItem Content="Автор (По возрастанию)"></ComboBoxItem>
+                        <ComboBoxItem Content="Автор (По убыванию)"></ComboBoxItem>
+                        <ComboBoxItem Content="Статус (По возрастанию)"></ComboBoxItem>
+                        <ComboBoxItem Content="Статус (По убыванию)"></ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+
                 <!--Button Add-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource filterCloseButton}" HorizontalAlignment="Right" Margin="0 0 10 0" Click="deleteFiltersButton_Click" ToolTip="Сбросить фильтры">
@@ -70,24 +82,32 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Vertical" Grid.Column="0">
                                     <Border BorderBrush="{StaticResource ColorAccent}" Width="250px" Height="200px">
-                                        <Image Source="{Binding ImagePathInText}"/>
+                                        <Image Source="{Binding Books.ImagePathInText}"/>
                                     </Border>
                                 </StackPanel>
                                 <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{StaticResource BlockHeader}" Text="{Binding Name}"/>
+                                        <TextBlock Style="{StaticResource BlockHeader}" Text="{Binding Books.Name}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{StaticResource SubBlock}" Text="{Binding AuthorInText}"/>
+                                        <TextBlock Style="{StaticResource SubBlock}" Text="{Binding Books.AuthorInText}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{StaticResource SubBlock}" Text="{Binding genresInText}"/>
+                                        <TextBlock Style="{StaticResource SubBlock}" Text="{Binding Books.genresInText}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource SubBlock}"
+                                            Text="{Binding Books.yearOfPublishing}"/>
                                     </StackPanel>
                                 </StackPanel>
                                 <StackPanel Orientation="Vertical" Grid.Column="2" HorizontalAlignment="Right" Margin="5">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Style="{StaticResource BlockHeader}" Foreground="{StaticResource ColorAccent}"
-                                            Text="{Binding yearOfPublishing}"/>
+                                            Text="{Binding BookStatuses.StatusName}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Visibility="{Binding AdminManagerVisibility}">
+                                        <TextBlock Style="{StaticResource BlockHeader}" Foreground="{StaticResource ColorAccent}"
+                                            Text="{Binding Users.Login}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>

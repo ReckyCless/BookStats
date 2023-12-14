@@ -139,6 +139,27 @@ namespace BookStats.Pages.BooksPages
                 p.Article.ToLower().Contains(txtSearch.Text.ToLower()) 
             ).ToList();
 
+
+            //Sorting
+            switch (cmbSort.SelectedIndex)
+            {
+                case 1:
+                    datagridSourceList = datagridSourceList.OrderBy(p => p.Name).ToList();
+                    break;
+                case 2:
+                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case 3:
+                    datagridSourceList = datagridSourceList.OrderBy(p => p.Author).ToList();
+                    break;
+                case 4:
+                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.Author).ToList();
+                    break;
+                default:
+                    datagridSourceList = datagridSourceList.OrderBy(p => p.Article).ToList();
+                    break;
+            }
+
             //Items Counter
             tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + App.Context.Books.Count().ToString();
 
@@ -343,6 +364,11 @@ namespace BookStats.Pages.BooksPages
                 UpdateDataGrid();
             };
             windowAddEdit.ShowDialog();
+        }
+
+        private void CBoxSortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateDataGrid();
         }
     }
 }

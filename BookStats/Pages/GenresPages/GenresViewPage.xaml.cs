@@ -17,28 +17,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BookStats.Pages.RequisitionsPages
+namespace BookStats.Pages.GenresPages
 {
     /// <summary>
-    /// Логика взаимодействия для RequisitionsViewPage.xaml
+    /// Логика взаимодействия для GenresViewPage.xaml
     /// </summary>
-    public partial class RequisitionsViewPage : Page
+    public partial class GenresViewPage : Page
     {
-        List<Requisitions> datagridSourceList = new List<Requisitions>();
+        List<Genres> datagridSourceList = new List<Genres>();
         private int PagesCount;
         private int NumberOfPage = 0;
         private int maxItemShow = 5;
-        public RequisitionsViewPage()
+        public GenresViewPage()
         {
             InitializeComponent();
-
-            cmbFilter.SelectedIndex = 0;
-            List<BookStatuses> cmbfilterList = new List<BookStatuses>();
-            var firstElem = new BookStatuses();
-            firstElem.StatusName = "Без фильтрации";
-            cmbfilterList.Add(firstElem);
-            cmbfilterList.AddRange(App.Context.BookStatuses.ToList());
-            cmbFilter.ItemsSource = cmbfilterList;
             UpdateDataGrid();
         }
         //#region Update database on Events
@@ -58,7 +50,7 @@ namespace BookStats.Pages.RequisitionsPages
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             AddEditWindow windowAddEdit = new AddEditWindow();
-            windowAddEdit.frameAddEdit.Navigate(new RequisitionsAddEditPage(null));
+            windowAddEdit.frameAddEdit.Navigate(new GenresAddEditPage(null));
             windowAddEdit.Closed += (s, EventArgs) =>
             {
                 UpdateDataGrid();
@@ -127,38 +119,16 @@ namespace BookStats.Pages.RequisitionsPages
         //DataGrid Fill 
         private void UpdateDataGrid()
         {
-            datagridSourceList = App.Context.Requisitions.ToList();
-            if (App.CurrentUser != null && App.CurrentUser.Role == 2)
-            {
-                datagridSourceList = datagridSourceList.Where(p => p.Users == App.CurrentUser).ToList();
-            }
-
-            // Filtration
-            if (cmbFilter.SelectedIndex > 0)
-            {
-                datagridSourceList = datagridSourceList.Where(p => p.BookStatuses == (BookStatuses)cmbFilter.SelectedItem).ToList();
-            }
+            datagridSourceList = App.Context.Genres.ToList();
 
             //Sorting
             switch (cmbSort.SelectedIndex)
             {
                 case 1:
-                    datagridSourceList = datagridSourceList.OrderBy(p => p.Books.Name).ToList();
+                    datagridSourceList = datagridSourceList.OrderBy(p => p.GenreName).ToList();
                     break;
                 case 2:
-                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.Books.Name).ToList();
-                    break;
-                case 3:
-                    datagridSourceList = datagridSourceList.OrderBy(p => p.Books.Author).ToList();
-                    break;
-                case 4:
-                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.Books.Author).ToList();
-                    break;
-                case 5:
-                    datagridSourceList = datagridSourceList.OrderBy(p => p.BookStatuses.StatusName).ToList();
-                    break;
-                case 6:
-                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.BookStatuses.StatusName).ToList();
+                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.GenreName).ToList();
                     break;
                 default:
                     datagridSourceList = datagridSourceList.OrderBy(p => p.ID).ToList();
@@ -166,13 +136,11 @@ namespace BookStats.Pages.RequisitionsPages
             }
 
             //Search
-            datagridSourceList = datagridSourceList.Where(p => p.Books.Name.ToLower().Contains(txtSearch.Text.ToLower()) ||
-                p.Books.Author.ToLower().Contains(txtSearch.Text.ToLower()) ||
-                p.Books.Article.ToLower().Contains(txtSearch.Text.ToLower())
+            datagridSourceList = datagridSourceList.Where(p => p.GenreName.ToLower().Contains(txtSearch.Text.ToLower())
             ).ToList();
 
             //Items Counter
-            tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + App.Context.Requisitions.Count().ToString();
+            tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + App.Context.Genres.Count().ToString();
 
             //Pages Counter
             if (datagridSourceList.Count % maxItemShow == 0)
@@ -363,14 +331,13 @@ namespace BookStats.Pages.RequisitionsPages
         {
             txtSearch.Text = "";
             cmbSort.SelectedIndex = 0;
-            cmbFilter.SelectedIndex = 0;
             UpdateDataGrid();
         }
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             AddEditWindow windowAddEdit = new AddEditWindow();
-            windowAddEdit.frameAddEdit.Navigate(new RequisitionsAddEditPage(LViewMain.SelectedItem as Requisitions));
+            windowAddEdit.frameAddEdit.Navigate(new GenresAddEditPage(LViewMain.SelectedItem as Genres));
             windowAddEdit.Closed += (s, EventArgs) =>
             {
                 UpdateDataGrid();
