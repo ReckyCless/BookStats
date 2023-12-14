@@ -1,8 +1,7 @@
-﻿using BookStats.Models;
-using BookStats.Windows;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -16,25 +15,33 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BookStats.Models;
+using BookStats.Windows;
 
-namespace BookStats.Pages.GenresPages
+namespace BookStats.Pages.ReadingListPages
 {
     /// <summary>
-    /// Логика взаимодействия для GenresViewPage.xaml
+    /// Логика взаимодействия для ReadingListViewPage.xaml
     /// </summary>
-    public partial class GenresViewPage : Page
+    public partial class ReadingListViewPage : Page
     {
-        List<Genres> datagridSourceList = new List<Genres>();
+        List<ReadingListBooks> datagridSourceList = new List<ReadingListBooks>();
         private int PagesCount;
         private int NumberOfPage = 0;
         private int maxItemShow = 5;
-
-        public GenresViewPage()
+        public ReadingListViewPage()
         {
             InitializeComponent();
 
             cmbSort.SelectedIndex = 0;
 
+            cmbFilter.SelectedIndex = 0;
+            List<Genres> genres = new List<Genres>();
+            var genre = new Genres();
+            genre.GenreName = "Без фильтрации";
+            genres.Add(genre);
+            genres.AddRange(App.Context.Genres.ToList());
+            cmbFilter.ItemsSource = genres;
             UpdateDataGrid();
         }
         //#region Update database on Events
@@ -54,7 +61,7 @@ namespace BookStats.Pages.GenresPages
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             AddEditWindow windowAddEdit = new AddEditWindow();
-            windowAddEdit.frameAddEdit.Navigate(new GenresAddEditPage(null));
+            windowAddEdit.frameAddEdit.Navigate(new ReadingListAddEditPage());
             windowAddEdit.Closed += (s, EventArgs) =>
             {
                 UpdateDataGrid();
@@ -66,23 +73,26 @@ namespace BookStats.Pages.GenresPages
         {
             if (LViewMain.SelectedItems.Count > 0)
             {
-                var elemsToDelete = LViewMain.SelectedItems.Cast<Genres>().ToList();
-                if (MessageBox.Show($"Вы точно хотите удалить следующие {elemsToDelete.Count()} элементов?", "Внимание",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (App.CurrentUser != null)
                 {
-                    try
+                    var elemsToDelete = LViewMain.SelectedItems.Cast<ReadingListBooks>().ToList();
+                    if (MessageBox.Show($"Вы точно хотите удалить следующие {elemsToDelete.Count()} элементов?", "Внимание",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        foreach (var elem in elemsToDelete)
+                        try
                         {
-                            App.Context.Genres.Remove(elem);
+                            foreach (var elem in elemsToDelete)
+                            {
+                                App.Context.ReadingListBooks.Remove(elem);
+                            }
+                            App.Context.SaveChanges();
+                            MessageBox.Show("Данные удалены!");
+                            UpdateDataGrid();
                         }
-                        App.Context.SaveChanges();
-                        MessageBox.Show("Данные удалены!");
-                        UpdateDataGrid();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message.ToString());
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message.ToString());
+                        }
                     }
                 }
             }
@@ -123,28 +133,45 @@ namespace BookStats.Pages.GenresPages
         //DataGrid Fill 
         private void UpdateDataGrid()
         {
-            datagridSourceList = App.Context.Genres.ToList();
+            if (App.CurrentUser != null)
+            {
+                datagridSourceList = App.Context.ReadingListBooks.Where(p => p.ReadingLists.UserID == App.CurrentUser.ID).ToList();
+            }
+
+            // Filtration
+            if (cmbFilter.SelectedIndex > 0)
+            {
+                datagridSourceList = datagridSourceList.Where(p => p.Books.BookGenres.Any(x => x.Genres == (Genres)cmbFilter.SelectedItem)).ToList();
+            }
+            //Search
+            datagridSourceList = datagridSourceList.Where(p => p.Books.Name.ToLower().Contains(txtSearch.Text.ToLower()) ||
+                p.Books.Author.ToLower().Contains(txtSearch.Text.ToLower()) ||
+                p.Books.Article.ToLower().Contains(txtSearch.Text.ToLower())
+            ).ToList();
+
 
             //Sorting
             switch (cmbSort.SelectedIndex)
             {
                 case 1:
-                    datagridSourceList = datagridSourceList.OrderBy(p => p.GenreName).ToList();
+                    datagridSourceList = datagridSourceList.OrderBy(p => p.Books.Name).ToList();
                     break;
                 case 2:
-                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.GenreName).ToList();
+                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.Books.Name).ToList();
+                    break;
+                case 3:
+                    datagridSourceList = datagridSourceList.OrderBy(p => p.Books.Author).ToList();
+                    break;
+                case 4:
+                    datagridSourceList = datagridSourceList.OrderByDescending(p => p.Books.Author).ToList();
                     break;
                 default:
-                    datagridSourceList = datagridSourceList.OrderBy(p => p.ID).ToList();
+                    datagridSourceList = datagridSourceList.OrderBy(p => p.Books.Article).ToList();
                     break;
             }
 
-            //Search
-            datagridSourceList = datagridSourceList.Where(p => p.GenreName.ToLower().Contains(txtSearch.Text.ToLower())
-            ).ToList();
-
             //Items Counter
-            tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + App.Context.Genres.Count().ToString();
+            tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + App.Context.ReadingListBooks.Count().ToString();
 
             //Pages Counter
             if (datagridSourceList.Count % maxItemShow == 0)
@@ -335,24 +362,27 @@ namespace BookStats.Pages.GenresPages
         private void deleteFiltersButton_Click(object sender, RoutedEventArgs e)
         {
             txtSearch.Text = "";
-            cmbSort.SelectedIndex = 0;
+            cmbFilter.SelectedIndex = 0;
             UpdateDataGrid();
-        }
-
-        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            AddEditWindow windowAddEdit = new AddEditWindow();
-            windowAddEdit.frameAddEdit.Navigate(new GenresAddEditPage(LViewMain.SelectedItem as Genres));
-            windowAddEdit.Closed += (s, EventArgs) =>
-            {
-                UpdateDataGrid();
-            };
-            windowAddEdit.ShowDialog();
         }
 
         private void CBoxSortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateDataGrid();
+        }
+
+        private void OpenWepBrowser(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Hyperlink link = e.OriginalSource as Hyperlink;
+                Process.Start(new ProcessStartInfo(link.Tag.ToString()));
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

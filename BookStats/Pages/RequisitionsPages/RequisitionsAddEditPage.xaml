@@ -19,14 +19,14 @@
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Приоритет"/>
                     </Border>
                     <TextBox Style="{StaticResource txtboxAddEdit}" x:Name="txtArticle" Text="{Binding Priority}" PreviewKeyDown="TextBox_PreviewKeyDown" 
-                            DataObject.Pasting="NumberValidationTextBox" PreviewTextInput="NumberValidationTextBox" MaxLength="10"/>
+                            DataObject.Pasting="NumberPastingHandler" PreviewTextInput="NumberValidationTextBox" MaxLength="10"/>
                 </StackPanel>
 
                 <StackPanel Margin="0 10">
                     <Border Style="{StaticResource blockBorderAddEdit}">
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Статус"/>
                     </Border>
-                    <ComboBox Height="30" SelectedItem="{Binding Users}" Name="cboxUsers" IsEnabled="False" DisplayMemberPath="Login"/>
+                    <ComboBox Height="30" SelectedItem="{Binding BookStatuses}" Name="cboxUsers" IsEnabled="False" DisplayMemberPath="StatusName"/>
                 </StackPanel>
 
                 <StackPanel>
@@ -41,7 +41,7 @@
                         </StackPanel>
                         <DataGrid x:Name="datagridManagers" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Height="175" Width="300">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Название" Width="auto" Binding="{Binding Path=FullName}"/>
+                                <DataGridTextColumn Header="Название" Width="auto" Binding="{Binding Path=Users.FullName}"/>
                                 <DataGridTextColumn Header="Дата добавления" Width="auto" Binding="{Binding Path=DateOfAdding}"/>
                             </DataGrid.Columns>
                             <DataGrid.ContextMenu>
@@ -80,7 +80,7 @@
                             <Border Style="{StaticResource blockBorderAddEdit}">
                                 <TextBlock Style="{StaticResource blockAddEdit}" Text="Книга"/>
                             </Border>
-                            <ComboBox  Height="30" x:Name="cmbBooks" DisplayMemberPath="Name" SelectionChanged="cmbBooks_SelectionChanged"/>
+                            <ComboBox SelectedItem="{Binding Books}"  Height="30" x:Name="cmbBooks" DisplayMemberPath="Name" SelectionChanged="cmbBooks_SelectonChanged"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

@@ -32,6 +32,9 @@ namespace BookStats.Pages.RequisitionsPages
         {
             InitializeComponent();
 
+
+            cmbSort.SelectedIndex = 0;
+
             cmbFilter.SelectedIndex = 0;
             List<BookStatuses> cmbfilterList = new List<BookStatuses>();
             var firstElem = new BookStatuses();
@@ -43,7 +46,7 @@ namespace BookStats.Pages.RequisitionsPages
 
             if (App.CurrentUser != null)
             {
-                if (App.CurrentUser.Role != 2)
+                if (App.CurrentUser.Role == 2)
                 {
                     btnStatusUpdate.Visibility = Visibility.Collapsed;
                 }
@@ -82,7 +85,7 @@ namespace BookStats.Pages.RequisitionsPages
         {
             if (LViewMain.SelectedItems.Count > 0)
             {
-                var elemsToDelete = LViewMain.SelectedItems.Cast<Books>().ToList();
+                var elemsToDelete = LViewMain.SelectedItems.Cast<Requisitions>().ToList();
                 if (MessageBox.Show($"Вы точно хотите удалить следующие {elemsToDelete.Count()} элементов?", "Внимание",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
@@ -90,7 +93,7 @@ namespace BookStats.Pages.RequisitionsPages
                     {
                         foreach (var elem in elemsToDelete)
                         {
-                            App.Context.Books.Remove(elem);
+                            App.Context.Requisitions.Remove(elem);
                         }
                         App.Context.SaveChanges();
                         MessageBox.Show("Данные удалены!");
@@ -125,7 +128,7 @@ namespace BookStats.Pages.RequisitionsPages
         {
             if (LViewMain.SelectedItems.Count > 0)
             {
-                var dialog = new ModalWindow(LViewMain.SelectedItems as List<Requisitions>);
+                var dialog = new ModalWindow(LViewMain.SelectedItems.Cast<Requisitions>().ToList());
                 if (dialog.ShowDialog() == true)
                 {
                     UpdateDataGrid();

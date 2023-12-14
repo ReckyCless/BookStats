@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BookStats.Windows;
+using BookStats.Models;
 
 namespace BookStats.Pages.ToolPages
 {
@@ -27,9 +28,18 @@ namespace BookStats.Pages.ToolPages
         }
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var currentUser = App.Context.Users.Where(p => (p.Login == tbLogin.Text || p.Email == tbLogin.Text) && p.Password == tbPassword.Password)
+            var currentUser = new Users();
+            try
+            {
+            currentUser = App.Context.Users.Where(p => (p.Login == tbLogin.Text || p.Email == tbLogin.Text) && p.Password == tbPassword.Password)
                 .AsEnumerable()
                 .FirstOrDefault(p => (p.Login == tbLogin.Text || p.Email == tbLogin.Text) && p.Password == tbPassword.Password);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             if (currentUser != null)
             {
                 App.CurrentUser = currentUser;
@@ -37,8 +47,38 @@ namespace BookStats.Pages.ToolPages
                     .Cast<Window>()
                     .FirstOrDefault(window => window is MainWindow) as MainWindow;
 
+                if (App.CurrentUser != null)
+                {
+                    currentWindow.stackNormal.Visibility = Visibility.Visible;
+                    currentWindow.stackLogOut.Visibility = Visibility.Visible;
+                    if (App.CurrentUser.Role == 1)
+                    {
+                        currentWindow.stackGenres.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        currentWindow.stackGenres.Visibility = Visibility.Collapsed;
+                    }
+                }
+                else
+                {
+                    currentWindow.stackNormal.Visibility = Visibility.Collapsed;
+                    currentWindow.stackLogOut.Visibility = Visibility.Collapsed;
+                }
+
                 MessageBox.Show("Прошло удачно!");
-                NavigationService.Navigate(new Pages.BooksPages.BooksViewPage());
+
+                var notificationsList = App.Context.NotificationTable.Where(p => p.Requisitions.UserID == currentUser.ID).ToList();
+                if (notificationsList.Count > 0)
+                {
+                    foreach (var notification in notificationsList)
+                    {
+                        var dialog = new NotificationWindow(notification);
+                        dialog.ShowDialog();
+                    }
+                }
+
+                NavigationService.Navigate(new Pages.RequisitionsPages.RequisitionsViewPage());
 
             }
             else
@@ -55,9 +95,9 @@ namespace BookStats.Pages.ToolPages
             var currentWindow = Application.Current.Windows
                 .Cast<Window>()
                 .FirstOrDefault(window => window is MainWindow) as MainWindow;
-            /*            currentWindow.AdminSidePanel.Visibility = Visibility.Collapsed;
-                        currentWindow.UserSidePanel.Visibility = Visibility.Collapsed;
-                        currentWindow.CabinetMenu.Visibility = Visibility.Collapsed;*/
+            currentWindow.stackGenres.Visibility = Visibility.Collapsed;
+            currentWindow.stackGoBack.Visibility = Visibility.Collapsed;
+            currentWindow.stackLogOut.Visibility = Visibility.Collapsed;
         }
 
         private void BtnToRegister_Click(object sender, RoutedEventArgs e)

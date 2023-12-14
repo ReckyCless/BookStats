@@ -46,32 +46,16 @@ namespace BookStats.Pages.RequisitionsPages
                 Title = "Заявки. Редактирование";
                 currentElem = elemData;
 
-                requisitionmanagersList = App.Context.RequisitionManagers.Where(p => p.RequisitionID == currentElem.ID).ToList();
-                foreach (var item in requisitionmanagersList)
-                {
-                    var manager = new RequisitionManagers();
-                    manager.Requisitions = item.Requisitions;
-                    manager.Users = item.Users;
-                    manager.DateOfAdding = item.DateOfAdding;
-                    datagridList.Add(manager);
-                }
-
-                if (App.CurrentUser != null)
-                    currentElem.Users = App.CurrentUser;
-                currentElem.BookStatuses = App.Context.BookStatuses.FirstOrDefault(p => p.ID == 1);            
-            }
-            else
-            {
                 if (App.CurrentUser != null && App.CurrentUser.Role == 3)
                 {
                     var requisitionmanagers = new RequisitionManagers();
                     requisitionmanagers.Users = App.CurrentUser;
                     requisitionmanagers.Requisitions = currentElem;
                     requisitionmanagers.DateOfAdding = DateTime.Now;
-                    if (!App.Context.RequisitionManagers.Any(p => p.Users == requisitionmanagers.Users && p.Requisitions == requisitionmanagers.Requisitions))
+                    if (!App.Context.RequisitionManagers.Any(p => p.ManagerID == requisitionmanagers.ManagerID && p.RequisitionID == requisitionmanagers.RequisitionID))
                     {
-                        currentElem.RequisitionManagers.Add(requisitionmanagers);
                         App.Context.RequisitionManagers.Add(requisitionmanagers);
+                        managersContext = App.Context.Users.Where(p => p.Role == 3).ToList();
                     }
 
                     var notification = new NotificationTable();
@@ -79,8 +63,22 @@ namespace BookStats.Pages.RequisitionsPages
                     notification.Users = requisitionmanagers.Users;
                     notification.IsChecked = false;
 
-                    App.Context.NotificationTable.Add(notification);
+                    if (!App.Context.NotificationTable.Any(p => p.UserID == notification.UserID && p.RequisitionID == notification.RequisitionID))
+                        App.Context.NotificationTable.Add(notification);
                 }
+
+                requisitionmanagersList = App.Context.RequisitionManagers.Where(p => p.RequisitionID == currentElem.ID).ToList();
+                foreach (var item in requisitionmanagersList)
+                {
+                    datagridList.Add(item);
+                }
+            }
+            else
+            {
+                currentElem.BookStatuses = App.Context.BookStatuses.FirstOrDefault(p => p.ID == 1);
+
+                if (App.CurrentUser != null)
+                    currentElem.Users = App.CurrentUser;
             }
             DataContext = currentElem;
 
@@ -90,6 +88,7 @@ namespace BookStats.Pages.RequisitionsPages
                 currentUser = App.CurrentUser;
                 if (currentUser.Role == 1 || currentUser.Role == 3)
                 {
+                    cboxUsers.IsEnabled = true;
                     stackControl.Visibility = Visibility.Visible;
                     cmbManagers.IsEnabled = false;
                     if (currentUser.Role == 1)
@@ -106,9 +105,9 @@ namespace BookStats.Pages.RequisitionsPages
 
             var genre = new Genres();
             genre.GenreName = "Без фильтрации";
-            var genres = App.Context.Genres.ToList();
+            var genres = new List<Genres>();
             genres.Add(genre);
-            genres.AddRange(genres);
+            genres.AddRange(App.Context.Genres.ToList());
             cmbGenres.ItemsSource = genres;
             cmbGenres.SelectedIndex = 0;
 
@@ -252,7 +251,7 @@ namespace BookStats.Pages.RequisitionsPages
                     }
                 }
             }
-            if (cmbGenres.SelectedItem != null)
+            if (cmbManagers.SelectedItem != null)
             {
                 var managerSelected = new RequisitionManagers();
                 managerSelected.Users = (Users)cmbManagers.SelectedItem;
@@ -264,8 +263,8 @@ namespace BookStats.Pages.RequisitionsPages
                 }
             }
 
-            cmbGenres.ItemsSource = managersAvailableList;
-            cmbGenres.SelectedIndex = -1;
+            cmbManagers.ItemsSource = managersAvailableList;
+            cmbManagers.SelectedIndex = -1;
 
             datagridManagers.ItemsSource = datagridList;
             datagridManagers.Items.Refresh();
@@ -337,6 +336,7 @@ namespace BookStats.Pages.RequisitionsPages
                 {
                     App.Context.RequisitionManagers.Add(item);
                 }
+                App.Context.SaveChanges();
 
                 datagridList = new List<RequisitionManagers>();
                 managersAvailableList = managersContext;
@@ -355,11 +355,6 @@ namespace BookStats.Pages.RequisitionsPages
             {
                 MessageBox.Show(ex.Message.ToString());
             }
-        }
-
-        private void cmbManagres_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            CheckManagers();
         }
 
         private void cmbGenres_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -385,6 +380,16 @@ namespace BookStats.Pages.RequisitionsPages
         private void txtSearchBooks_TextChanged(object sender, TextChangedEventArgs e)
         {
             booksSearch();
+        }
+
+        private void cmbManagers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CheckManagers();
+        }
+
+        private void cmbBooks_SelectonChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

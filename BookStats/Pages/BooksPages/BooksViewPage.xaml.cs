@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -31,6 +32,8 @@ namespace BookStats.Pages.BooksPages
         public BooksViewPage()
         {
             InitializeComponent();
+
+            cmbSort.SelectedIndex = 0;
 
             cmbFilter.SelectedIndex = 0;
             List<Genres> genres = new List<Genres>();
@@ -393,6 +396,20 @@ namespace BookStats.Pages.BooksPages
         private void CBoxSortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateDataGrid();
+        }
+
+        private void OpenWepBrowser(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Hyperlink link = e.OriginalSource as Hyperlink;
+                Process.Start(new ProcessStartInfo(link.Tag.ToString()));
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

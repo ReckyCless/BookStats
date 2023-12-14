@@ -30,11 +30,61 @@
                         </Grid>
 
                         <!-- Start: MenuItem -->
-                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Width="200">
                             <DockPanel>
-                                <Button VerticalAlignment="Bottom" DockPanel.Dock="Bottom" x:Name="btnBack" Style="{DynamicResource roundedButton}"  Click="BtnBack_Click">
-                                    <TextBlock FontSize="26" Text="🔙"/>
-                                </Button>
+                                <StackPanel VerticalAlignment="Top" DockPanel.Dock="Top" x:Name="stackNormal">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <Button x:Name="btnRequisitions" Style="{DynamicResource roundedButton}"  Click="BtnRequisitions_Click">
+                                            <StackPanel>
+                                                <TextBlock FontSize="26" Text="◍"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <TextBlock Style="{StaticResource blockAddEdit}" FontSize="26" FontFamily="Comic Sans MS" Text="Заявки"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="btnBooks" Style="{DynamicResource roundedButton}"  Click="btnBooks_Click">
+                                            <StackPanel>
+                                                <TextBlock FontSize="26" Text="📚"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <TextBlock Style="{StaticResource blockAddEdit}" FontSize="26" FontFamily="Comic Sans MS" Text="Книги"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="btnReadingList" Style="{DynamicResource roundedButton}"  Click="btnReadingList_Click">
+                                            <StackPanel>
+                                                <TextBlock FontSize="26" Text="߷"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <TextBlock Style="{StaticResource blockAddEdit}" FontSize="26" FontFamily="Comic Sans MS" Text="Дневник"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel x:Name="stackGenres" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" >
+                                    <Button x:Name="btnGenres" Style="{DynamicResource roundedButton}"  Click="btnGenress_Click">
+                                        <StackPanel>
+                                            <TextBlock FontSize="26" Text="●"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBlock Style="{StaticResource blockAddEdit}" FontSize="26" FontFamily="Comic Sans MS" Text="Жанры"/>
+                                </StackPanel>
+
+                                <StackPanel x:Name="stackLogOut" Orientation="Horizontal" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" >
+                                    <Button x:Name="btnLogOut" Style="{DynamicResource roundedButton}"  Click="BtnLogOut_Click">
+                                        <StackPanel>
+                                            <TextBlock FontSize="26" Text="👤"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBlock Style="{StaticResource blockAddEdit}" FontSize="26" FontFamily="Comic Sans MS" Text="Выйти"/>
+                                </StackPanel>
+                                <StackPanel x:Name="stackGoBack" Orientation="Horizontal" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" >
+                                    <Button x:Name="btnBack" Style="{DynamicResource roundedButton}"  Click="BtnBack_Click">
+                                        <StackPanel>
+                                            <TextBlock FontSize="26" Text="🔙"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBlock Style="{StaticResource blockAddEdit}" FontSize="26" FontFamily="Comic Sans MS" Text="Назад"/>
+                                </StackPanel>
                             </DockPanel>
                         </ScrollViewer>
 

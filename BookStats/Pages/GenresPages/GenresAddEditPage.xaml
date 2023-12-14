@@ -18,7 +18,7 @@
                     <Border Style="{StaticResource blockBorderAddEdit}">
                         <TextBlock Style="{StaticResource blockAddEdit}" Text="Название"/>
                     </Border>
-                    <TextBox Style="{StaticResource txtboxAddEdit}" x:Name="txtGenreName" Text="{Binding GenreName}" DataObject.Pasting="TextValidationTextBox" PreviewTextInput="TextValidationTextBox" MaxLength="300"/>
+                    <TextBox Style="{StaticResource txtboxAddEdit}" x:Name="txtGenreName" Text="{Binding GenreName}" DataObject.Pasting="TextPastingHandler" PreviewTextInput="TextValidationTextBox" MaxLength="300"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

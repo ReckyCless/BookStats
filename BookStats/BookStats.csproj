@@ -34,9 +34,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\IconForPractice01.11.23-01.12.23AppMBBBOUDARIESMMBB-04.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder, Version=1.4.3.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.4.3\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder.Xaml, Version=1.4.3.0, Culture=neutral, PublicKeyToken=8ca57126c5670df7, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.Xaml.1.4.3\lib\net40\QRCoder.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -62,6 +71,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\RequisitionsPartial.cs" />
+    <Compile Include="Pages\ReadingListPages\ReadingListAddEditPage.xaml.cs">
+      <DependentUpon>ReadingListAddEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ReadingListPages\ReadingListViewPage.xaml.cs">
+      <DependentUpon>ReadingListViewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ModalWindow.xaml.cs">
       <DependentUpon>ModalWindow.xaml</DependentUpon>
     </Compile>
@@ -83,6 +99,14 @@
     <Page Include="Pages\GenresPages\GenresViewPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\ReadingListPages\ReadingListAddEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ReadingListPages\ReadingListViewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\RequisitionsPages\RequisitionsAddEditPage.xaml">
       <SubType>Designer</SubType>
@@ -246,10 +270,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\default.png" />
+    <Resource Include="Resources\default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\IconForPractice01.11.23-01.12.23AppMBBBOUDARIESMMBB-04.ico" />
     <Content Include="Models\BooksStatsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BooksStatsModel.edmx</DependentUpon>

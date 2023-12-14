@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="BooksStatsDBModel.BookStatuses" Width="1.5" PointX="2.125" PointY="11.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.Genres" Width="1.5" PointX="5.25" PointY="16.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.ReadingListBooks" Width="1.5" PointX="7.5" PointY="9.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BooksStatsDBModel.ReadingLists" Width="1.5" PointX="5.25" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BooksStatsDBModel.ReadingLists" Width="1.5" PointX="5.25" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.RequisitionManagers" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.Requisitions" Width="1.5" PointX="6.875" PointY="12" IsExpanded="true" />
         <EntityTypeShape EntityType="BooksStatsDBModel.Roles" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />

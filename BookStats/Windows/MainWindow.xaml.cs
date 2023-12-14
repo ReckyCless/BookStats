@@ -61,11 +61,67 @@ namespace BookStats.Windows
         {
             if (frameMain.CanGoBack)
             {
-                btnBack.Visibility = Visibility.Visible;
+                stackGoBack.Visibility = Visibility.Visible;
             }
             else
             {
-                btnBack.Visibility = Visibility.Collapsed;
+                stackGoBack.Visibility = Visibility.Collapsed;
+            }
+            if (App.CurrentUser != null)
+            {
+                stackNormal.Visibility = Visibility.Visible;
+                stackLogOut.Visibility = Visibility.Visible;
+                if (App.CurrentUser.Role == 1)
+                {
+                    stackGenres.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    stackGenres.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                stackNormal.Visibility = Visibility.Collapsed;
+                stackLogOut.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void BtnRequisitions_Click(object sender, RoutedEventArgs e)
+        {
+            if (frameMain.Content.ToString() != "BookStats.Pages.RequisitionsPages.RequisitionsViewPage")
+            {
+                frameMain.Navigate(new Pages.RequisitionsPages.RequisitionsViewPage());
+            }
+        }
+
+        private void btnBooks_Click(object sender, RoutedEventArgs e)
+        {
+            if (frameMain.Content.ToString() != "BookStats.Pages.BooksPages.BooksViewPage")
+            {
+                frameMain.Navigate(new Pages.BooksPages.BooksViewPage());
+            }
+        }
+
+        private void btnGenress_Click(object sender, RoutedEventArgs e)
+        {
+            if (frameMain.Content.ToString() != "BookStats.Pages.GenresPages.GenresViewPage")
+            {
+                frameMain.Navigate(new Pages.GenresPages.GenresViewPage());
+            }
+        }
+
+        private void BtnLogOut_Click(object sender, RoutedEventArgs e)
+        {
+            RejectChanges();
+            frameMain.Navigate(new Pages.ToolPages.AuthPage());
+        }
+
+        private void btnReadingList_Click(object sender, RoutedEventArgs e)
+        {
+            if (frameMain.Content.ToString() != "BookStats.Pages.ReadingListPages.ReadingListViewPage")
+            {
+                frameMain.Navigate(new Pages.ReadingListPages.ReadingListViewPage());
             }
         }
     }

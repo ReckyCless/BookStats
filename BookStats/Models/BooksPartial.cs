@@ -24,8 +24,7 @@ namespace BookStats.Models
                 }
                 else
                 {
-                    Debug.Print("B");
-                    return @"../Resources/default.png";
+                    return directory + @"/default.png";
                 }
             }
         }
@@ -60,7 +59,8 @@ namespace BookStats.Models
                 {
                     txt += elem.Genres.GenreName + ", ";
                 }
-                txt.TrimEnd(' ', ',');
+                txt = txt.TrimEnd(' ');
+                txt = txt.TrimEnd(',');
                 if (txt.Length > 0)
                 {
                     txt = txt.Insert(0, "Жанры: ");
@@ -91,6 +91,17 @@ namespace BookStats.Models
                 }
                 return Visibility.Collapsed;
             }
-        } 
+        }
+        public Visibility visibilityLink
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(SourceLink))
+                {
+                    return Visibility.Visible;
+                }
+                return Visibility.Hidden;
+            }
+        }
     }
 }

@@ -15,13 +15,20 @@ namespace BookStats.Models
             {
                 if (App.CurrentUser != null)
                 {
-                    if (App.CurrentUser.Role == 1 || App.CurrentUser.Role == 3)
+                    if (App.CurrentUser.Role == 2)
+                    {
+                        return Visibility.Collapsed;
+                    }
+                    else
                     {
                         return Visibility.Visible;
                     }
                 }
-                return Visibility.Collapsed;
+                else
+                {
+                    return Visibility.Collapsed;
+                }
             }
-        } 
+        }
     }
 }

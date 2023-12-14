@@ -41,22 +41,27 @@ namespace BookStats.Windows
                         {
                             foreach (var elem in ItemsList)
                             {
-                                var manager = new RequisitionManagers();
+/*                                var manager = new RequisitionManagers();
                                 manager.Requisitions = elem;
                                 manager.Users = App.CurrentUser;
                                 manager.DateOfAdding = DateTime.Now;
 
-                                if (!App.Context.RequisitionManagers.Any(p => p.Users == manager.Users && p.Requisitions == manager.Requisitions))
+                                if (!App.Context.RequisitionManagers.Any(p => p.ManagerID == manager.ManagerID && p.RequisitionID == manager.RequisitionID))
                                 {
                                     App.Context.RequisitionManagers.Add(manager);
-                                }
+                                }*/
 
                                 var notification = new NotificationTable();
                                 notification.Requisitions = elem;
-                                notification.Users = manager.Users;
+                                notification.RequisitionID = elem.ID;
+                                notification.Users = App.CurrentUser;
+                                notification.UserID = App.CurrentUser.ID;
                                 notification.IsChecked = false;
 
-                                App.Context.NotificationTable.Add(notification);
+                                if (!App.Context.NotificationTable.Any(p => p.UserID == notification.UserID && p.RequisitionID == notification.RequisitionID))
+                                {
+                                    App.Context.NotificationTable.Add(notification);
+                                }
 
                                 elem.BookStatuses = (BookStatuses)cmbWorksheetSelection.SelectedItem;
                             }
@@ -67,6 +72,8 @@ namespace BookStats.Windows
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                    if (ex.InnerException != null)
+                        MessageBox.Show(ex.InnerException.ToString());
                 }
                 DialogResult = true;
                 

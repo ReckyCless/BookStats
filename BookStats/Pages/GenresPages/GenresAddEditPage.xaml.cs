@@ -203,5 +203,10 @@ namespace BookStats.Pages.GenresPages
                 MessageBox.Show(ex.Message.ToString());
             }
         }
+
+        private void TextValidationTextBox(object sender, DataObjectPastingEventArgs e)
+        {
+
+        }
     }
 }
