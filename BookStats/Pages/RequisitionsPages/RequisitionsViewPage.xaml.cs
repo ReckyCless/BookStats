@@ -146,7 +146,7 @@ namespace BookStats.Pages.RequisitionsPages
             datagridSourceList = App.Context.Requisitions.ToList();
             if (App.CurrentUser != null && App.CurrentUser.Role == 2)
             {
-                datagridSourceList = datagridSourceList.Where(p => p.Users == App.CurrentUser).ToList();
+                datagridSourceList = datagridSourceList.Where(p => p.UserID == App.CurrentUser.ID).ToList();
             }
 
             // Filtration
@@ -188,7 +188,12 @@ namespace BookStats.Pages.RequisitionsPages
             ).ToList();
 
             //Items Counter
-            tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + App.Context.Requisitions.Count().ToString();
+            var counter = App.Context.Requisitions.Count().ToString();
+            if (App.CurrentUser != null && App.CurrentUser.Role == 2)
+            {
+                counter = App.Context.Requisitions.Where(p => p.UserID == App.CurrentUser.ID).Count().ToString();
+            }
+            tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + counter;
 
             //Pages Counter
             if (datagridSourceList.Count % maxItemShow == 0)

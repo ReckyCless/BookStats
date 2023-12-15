@@ -61,7 +61,10 @@ namespace BookStats.Windows
         {
             if (frameMain.CanGoBack)
             {
-                stackGoBack.Visibility = Visibility.Visible;
+                if (frameMain.Content.ToString() != "BookStats.Pages.ToolPages.AuthPage")
+                {
+                    stackGoBack.Visibility = Visibility.Visible;
+                }
             }
             else
             {

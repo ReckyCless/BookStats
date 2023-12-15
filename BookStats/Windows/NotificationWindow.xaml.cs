@@ -29,8 +29,8 @@ namespace BookStats.Windows
             notificationTable = notificationTableGet;
 
             txtMessage.Text = $"Менеджер - {notificationTable.Users.FullName}" +
-                $"\nизменил статус вашего заказа: {notificationTable.RequisitionID}" +
-                $"\nна {notificationTable.Requisitions.BookStatuses.StatusName}" +
+                $"\nизменил статус вашей заявки: «{notificationTable.RequisitionID}»" +
+                $"\nна «{notificationTable.Requisitions.BookStatuses.StatusName}»" +
                 $"\n" +
                 $"\nОцените его работу через QR код";
             QRCodeGenerate("https://imgur.com/a/ve321oG");

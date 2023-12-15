@@ -48,23 +48,30 @@ namespace BookStats.Pages.RequisitionsPages
 
                 if (App.CurrentUser != null && App.CurrentUser.Role == 3)
                 {
-                    var requisitionmanagers = new RequisitionManagers();
-                    requisitionmanagers.Users = App.CurrentUser;
-                    requisitionmanagers.Requisitions = currentElem;
-                    requisitionmanagers.DateOfAdding = DateTime.Now;
-                    if (!App.Context.RequisitionManagers.Any(p => p.ManagerID == requisitionmanagers.ManagerID && p.RequisitionID == requisitionmanagers.RequisitionID))
+                    var manager = new RequisitionManagers();
+                    manager.Requisitions = currentElem;
+                    manager.RequisitionID = currentElem.ID;
+                    manager.Users = App.CurrentUser;
+                    manager.ManagerID = App.CurrentUser.ID;
+                    manager.DateOfAdding = DateTime.Now;
+
+                    if (!App.Context.RequisitionManagers.Any(p => p.ManagerID == manager.ManagerID && p.RequisitionID == manager.RequisitionID))
                     {
-                        App.Context.RequisitionManagers.Add(requisitionmanagers);
+                        App.Context.RequisitionManagers.Add(manager);
                         managersContext = App.Context.Users.Where(p => p.Role == 3).ToList();
                     }
 
                     var notification = new NotificationTable();
                     notification.Requisitions = currentElem;
-                    notification.Users = requisitionmanagers.Users;
+                    notification.RequisitionID = currentElem.ID;
+                    notification.Users = App.CurrentUser;
+                    notification.UserID = App.CurrentUser.ID;
                     notification.IsChecked = false;
 
                     if (!App.Context.NotificationTable.Any(p => p.UserID == notification.UserID && p.RequisitionID == notification.RequisitionID))
+                    {
                         App.Context.NotificationTable.Add(notification);
+                    }
                 }
 
                 requisitionmanagersList = App.Context.RequisitionManagers.Where(p => p.RequisitionID == currentElem.ID).ToList();
@@ -83,7 +90,7 @@ namespace BookStats.Pages.RequisitionsPages
             DataContext = currentElem;
 
             var currentUser = new Users();
-            if (App.CurrentUser != null)
+            if (App.CurrentUser != null && isEditing)
             {
                 currentUser = App.CurrentUser;
                 if (currentUser.Role == 1 || currentUser.Role == 3)
@@ -112,6 +119,7 @@ namespace BookStats.Pages.RequisitionsPages
             cmbGenres.SelectedIndex = 0;
 
             cmbBooks.ItemsSource = booksContext;
+            cboxUsers.ItemsSource = App.Context.BookStatuses.ToList();
 
             cmbManagers.ItemsSource = managersContext;
             CheckManagers();

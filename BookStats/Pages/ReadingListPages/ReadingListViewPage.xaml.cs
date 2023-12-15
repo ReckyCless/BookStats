@@ -171,7 +171,8 @@ namespace BookStats.Pages.ReadingListPages
             }
 
             //Items Counter
-            tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + App.Context.ReadingListBooks.Count().ToString();
+            if (App.CurrentUser != null)
+                tbItemCounter.Text = datagridSourceList.Count.ToString() + " из " + App.Context.ReadingListBooks.Where(p => p.ReadingLists.UserID == App.CurrentUser.ID).Count().ToString();
 
             //Pages Counter
             if (datagridSourceList.Count % maxItemShow == 0)

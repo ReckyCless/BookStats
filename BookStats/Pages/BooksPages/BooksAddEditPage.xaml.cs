@@ -373,6 +373,7 @@ namespace BookStats.Pages.BooksPages
                 datagridGenres.Items.Refresh();
                 cmbGenres.ItemsSource = genresAvailableList;
                 cmbGenres.Items.Refresh();
+
                 currentElem = new Books();
                 currentElem.PublicationDate = DateTime.Today;
                 DataContext = currentElem;

@@ -41,15 +41,17 @@ namespace BookStats.Windows
                         {
                             foreach (var elem in ItemsList)
                             {
-/*                                var manager = new RequisitionManagers();
+                                var manager = new RequisitionManagers();
                                 manager.Requisitions = elem;
+                                manager.RequisitionID = elem.ID;
                                 manager.Users = App.CurrentUser;
+                                manager.ManagerID = App.CurrentUser.ID;
                                 manager.DateOfAdding = DateTime.Now;
 
                                 if (!App.Context.RequisitionManagers.Any(p => p.ManagerID == manager.ManagerID && p.RequisitionID == manager.RequisitionID))
                                 {
                                     App.Context.RequisitionManagers.Add(manager);
-                                }*/
+                                }
 
                                 var notification = new NotificationTable();
                                 notification.Requisitions = elem;
